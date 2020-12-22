@@ -1,2 +1,2 @@
-# moogle
-μ | search the marvel universe
+# μ | moogle
+search the marvel universe
