@@ -42,5 +42,15 @@ export default {
   axios: {},
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {}
+  build: {},
+
+  publicRuntimeConfig: {
+    baseURL: 'https://gateway.marvel.com/v1/public',
+    marvelPuk: process.env.MARVEL_PUK,
+    marvelPrk: process.env.MARVEL_PRK
+  },
+  privateRuntimeConfig: {
+    marvelPuk: process.env.MARVEL_PUK,
+    marvelPrk: process.env.MARVEL_PRK
+  }
 }

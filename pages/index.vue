@@ -3,39 +3,38 @@
     <div>
       <Logo />
       <input
+        v-model="searchQuery"
         type="text"
         class="search-box"
-        placeholder="find a hero/villain)"
+        placeholder="find a hero/villain"
       />
     </div>
-    <section class="feel-lucky">
+    <section v-if="searchQuery.length === 0" class="feel-lucky">
       <h2>Browse characters starting with this letter...</h2>
       <ul class="search-list px-40">
         <li
-          v-for="(letter, idx) in iFeelLucky"
+          v-for="(letter, idx) in iFeelLucky()"
           :key="letter.id"
           class="search-list__item"
         >
-          <button :class="['search-list__button', getButtonClass(idx)]">
+          <button
+            :class="['search-list__button', getButtonClass(idx)]"
+            @click="searchQuery = letter"
+          >
             {{ letter }}
           </button>
         </li>
       </ul>
     </section>
+    <SearchList v-else :find="searchQuery" />
     <footer>
       <div class="favourites">
         <h2>Your favourites</h2>
 
         <ul class="bookmarks-list">
           <li
-            v-for="(hero, idx) in [
-              'Thor',
-              'Gommorah',
-              'Iron Man',
-              'Thanos',
-              'Ultron',
-            ]"
-            :key="idx"
+            v-for="hero in ['Thor', 'Gommorah', 'Iron Man', 'Thanos', 'Ultron']"
+            :key="hero.id"
             class="bookmarks__item"
           >
             <button :class="['bookmarks__button']">
@@ -53,7 +52,13 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'Index',
-  computed: {
+  data() {
+    return {
+      searchQuery: '',
+    }
+  },
+  computed: {},
+  methods: {
     iFeelLucky(): [] {
       // Load Chance
       const Chance = require('chance')
@@ -61,8 +66,6 @@ export default Vue.extend({
 
       return chance.unique(chance.letter, 4)
     },
-  },
-  methods: {
     getButtonClass(idx: number): Object {
       return {
         'btn--primary': idx === 0,
@@ -112,7 +115,5 @@ export default Vue.extend({
 
 .bookmarks__button {
   @apply rounded-md bg-primary-alt text-white p-4;
-
-  text-transform: uppercase;
 }
 </style>
