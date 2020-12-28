@@ -7,3 +7,17 @@
   --color-secondary: #D8F3FF;
   --color-secondary-alt: #5E7998;
 }
+
+.btn--primary {
+  @apply bg-primary;
+}
+.btn--primary-alt {
+  @apply bg-primary-alt;
+}
+.btn--secondary {
+  @apply bg-secondary;
+  @apply text-black #{!important};
+}
+.btn--secondary-alt {
+  @apply bg-secondary-alt;
+}

@@ -1,46 +1,75 @@
 <template>
-  <div class="container">
+  <div class="container mx-auto px-4 m:px-40">
     <div>
       <Logo />
-      <input type="text" class="search-box" placeholder="find your hero" />
+      <input
+        type="text"
+        class="search-box"
+        placeholder="find a hero/villain)"
+      />
     </div>
-    <h2>Browse</h2>
-    <ul class="search-list">
-      <li
-        v-for="(letter, idx) in alpha"
-        :key="letter.id"
-        class="search-list__item"
-      >
-        <button :class="['search-list__button', `bg-${getButtonColor()}`]">
-          {{ letter }}
-        </button>
-      </li>
-    </ul>
+    <section class="feel-lucky">
+      <h2>Browse characters starting with this letter...</h2>
+      <ul class="search-list px-40">
+        <li
+          v-for="(letter, idx) in iFeelLucky"
+          :key="letter.id"
+          class="search-list__item"
+        >
+          <button :class="['search-list__button', getButtonClass(idx)]">
+            {{ letter }}
+          </button>
+        </li>
+      </ul>
+    </section>
+    <footer>
+      <div class="favourites">
+        <h2>Your favourites</h2>
+
+        <ul class="bookmarks-list">
+          <li
+            v-for="(hero, idx) in [
+              'Thor',
+              'Gommorah',
+              'Iron Man',
+              'Thanos',
+              'Ultron',
+            ]"
+            :key="idx"
+            class="bookmarks__item"
+          >
+            <button :class="['bookmarks__button']">
+              {{ hero }}
+            </button>
+          </li>
+        </ul>
+      </div>
+    </footer>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-// import Chance from 'chance'
 
 export default Vue.extend({
   name: 'Index',
-
   computed: {
-    alpha(): [] {
-      const alphabet = require('alphabet')
-      return alphabet.upper
+    iFeelLucky(): [] {
+      // Load Chance
+      const Chance = require('chance')
+      const chance = new Chance()
+
+      return chance.unique(chance.letter, 4)
     },
   },
   methods: {
-    // Load Chance
-    getButtonColor(): String {
-      const Chance = require('chance')
-
-      // Instantiate Chance so it can be used
-      const chance = new Chance()
-      const colors = ['primary', 'primary-alt', 'secondary', 'secondary-alt']
-      return chance.pickone(colors)
+    getButtonClass(idx: number): Object {
+      return {
+        'btn--primary': idx === 0,
+        'btn--primary-alt': idx === 1,
+        'btn--secondary': idx === 2,
+        'btn--secondary-alt': idx === 3,
+      }
     },
   },
 })
@@ -73,8 +102,17 @@ export default Vue.extend({
 .search-list__button {
   @apply rounded-md h-24 w-24 text-white;
 
-  &.bg-secondary {
-    @apply text-black;
-  }
+  text-transform: uppercase;
+}
+
+.bookmarks-list {
+  @apply grid grid-flow-col-dense;
+  // grid-cols-4 gap-4;
+}
+
+.bookmarks__button {
+  @apply rounded-md bg-primary-alt text-white p-4;
+
+  text-transform: uppercase;
 }
 </style>
