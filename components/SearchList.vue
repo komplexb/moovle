@@ -18,7 +18,7 @@
           <strong>{{ character.name }}</strong>
         </nuxt-link>
         <p v-if="character.description">
-          {{ `${character.description.slice(0, 100)}...` }}
+          {{ character.description | formatDescription(true) }}
         </p>
       </li>
     </ul>
