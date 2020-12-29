@@ -1,5 +1,7 @@
 <template>
-  <img src="~/assets/images/moovle.png" alt="" class="Logo" />
+  <NuxtLink to="/">
+    <img src="~/assets/images/moovle.png" alt="" class="Logo" />
+  </NuxtLink>
 </template>
 
 <style>

@@ -1,12 +1,12 @@
 <template>
-  <div class="container mx-auto px-4 m:px-40">
+  <div class="container text-center">
     <div>
-      <Logo />
       <input
         v-model="searchQuery"
         type="text"
         class="search-box"
         placeholder="find a hero/villain"
+        @keyup="handleEnter"
       />
     </div>
     <section v-if="searchQuery.length === 0" class="feel-lucky">
@@ -26,8 +26,8 @@
         </li>
       </ul>
     </section>
-    <SearchList v-else :find="searchQuery" />
-    <footer>
+    <SearchList v-else :find="searchQuery" :query-type="findName" />
+    <footer v-if="false">
       <div class="favourites">
         <h2>Your favourites</h2>
 
@@ -55,6 +55,7 @@ export default Vue.extend({
   data() {
     return {
       searchQuery: '',
+      findName: false,
     }
   },
   computed: {},
@@ -74,15 +75,14 @@ export default Vue.extend({
         'btn--secondary-alt': idx === 3,
       }
     },
+    handleEnter(e: KeyboardEvent): void {
+      this.findName = e.key === 'Enter'
+    },
   },
 })
 </script>
 
 <style lang="scss">
-.container {
-  @apply min-h-screen text-center mx-auto;
-}
-
 .search-box {
   @apply h-24 border-primary rounded-lg focus:border-red-300 focus:ring-2 focus:ring-red-200 focus:ring-opacity-50 mt-4 md:mt-8;
   @apply text-primary text-3xl md:text-7xl placeholder-primary;

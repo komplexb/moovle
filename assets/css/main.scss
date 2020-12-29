@@ -21,3 +21,7 @@
 .btn--secondary-alt {
   @apply bg-secondary-alt;
 }
+
+.container {
+  @apply min-h-screen mx-auto px-4 sm:px-40;
+}

@@ -1,5 +1,7 @@
 <template>
   <div>
+    <Logo />
+
     <Nuxt keep-alive />
   </div>
 </template>

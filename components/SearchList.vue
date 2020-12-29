@@ -8,8 +8,17 @@
           alt="character.name"
         />
         -->
-        <p>
-          {{ character.name }}
+        <nuxt-link
+          :to="{
+            path: `/character/${character.id}`,
+            params: { id: character.id },
+            props: { character },
+          }"
+        >
+          <strong>{{ character.name }}</strong>
+        </nuxt-link>
+        <p v-if="character.description">
+          {{ `${character.description.slice(0, 100)}...` }}
         </p>
       </li>
     </ul>
@@ -28,11 +37,17 @@ export default Vue.extend({
       default: '',
       required: true,
     },
+    queryType: {
+      type: Boolean,
+      default: false,
+    },
   },
   async fetch() {
     const timestamp = Date.now()
     const hash = this.generateHash(timestamp)
-    const params = `nameStartsWith=${this.find}&apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
+    const params = `${this.queryType ? 'name' : 'nameStartsWith'}=${
+      this.find
+    }&apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
 
     const response = await fetch(
       `${this.$config.baseURL}/characters?${params}`
@@ -51,8 +66,16 @@ export default Vue.extend({
         this.$fetch()
       }, 200)
     },
+    queryType(val): void {
+      if (val) {
+        setTimeout(() => {
+          this.$fetch()
+        }, 200)
+      }
+    },
   },
   methods: {
+    // Todo: a mixin would be nice, but we only do this twice
     generateHash(timestamp: Number): String {
       return md5(
         `${timestamp}${this.$config.marvelPrk}${this.$config.marvelPuk}`
