@@ -95,7 +95,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    // a mixin would be nice, but we only do this twice
+    // Todo: a mixin would be nice, but we only do this twice
     generateHash(timestamp: Number): String {
       return md5(
         `${timestamp}${this.$config.marvelPrk}${this.$config.marvelPuk}`

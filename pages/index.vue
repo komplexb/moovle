@@ -85,10 +85,9 @@ export default Vue.extend({
 <style lang="scss">
 .search-box {
   @apply h-24 border-primary rounded-lg focus:border-red-300 focus:ring-2 focus:ring-red-200 focus:ring-opacity-50 mt-4 md:mt-8;
-  @apply text-primary text-3xl md:text-7xl placeholder-primary;
+  @apply text-primary text-3xl md:text-7xl placeholder-primary w-full;
 
   border-width: 2px;
-  width: 75vw;
   text-align: center;
 
   &::placeholder {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul>
+    <ul v-if="results.length > 0">
       <li v-for="character in results" :key="character.id">
         <!--
         <img
@@ -22,6 +22,7 @@
         </p>
       </li>
     </ul>
+    <div v-else>Sorry we haven't created your hero yet, please try again.</div>
   </div>
 </template>
 
