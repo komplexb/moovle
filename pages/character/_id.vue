@@ -12,6 +12,12 @@
         }}</a>
       </li>
     </ul>
+    <img
+      v-if="hasImage"
+      :src="`${character.thumbnail.path}/portrait_incredible.${character.thumbnail.extension}`"
+      :srcset="`${character.thumbnail.path}/portrait_uncanny.${character.thumbnail.extension} 2x`"
+      :alt="character.name"
+    />
     <Chart :stats="stats" />
   </div>
 </template>
@@ -92,6 +98,9 @@ export default Vue.extend({
     description(): String {
       // @ts-ignore
       return this.character?.description || ''
+    },
+    hasImage(): Boolean {
+      return this.character?.thumbnail
     },
   },
   methods: {
