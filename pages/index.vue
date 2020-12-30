@@ -1,6 +1,6 @@
 <template>
-  <div class="container text-center">
-    <section>
+  <div class="container">
+    <section class="text-center">
       <input
         v-model="searchQuery"
         type="text"
@@ -10,7 +10,7 @@
       />
     </section>
     <section v-if="searchQuery.length === 0" class="feel-lucky">
-      <h2>Browse characters starting with this letter...</h2>
+      <strong>Browse characters starting with this letter...</strong>
       <ul class="feel-lucky-list">
         <li
           v-for="(letter, idx) in iFeelLucky()"
@@ -21,7 +21,7 @@
             :class="['feel-lucky-list__button', getButtonClass(idx)]"
             @click="searchQuery = letter"
           >
-            <span>{{ letter }}</span>
+            <strong>{{ letter }}</strong>
           </button>
         </li>
       </ul>
@@ -88,18 +88,22 @@ section {
 }
 .search-box {
   @apply h-24 border-primary rounded-lg focus:border-red-300 focus:ring-2 focus:ring-red-200 focus:ring-opacity-50 mt-4 md:mt-8;
-  @apply text-primary text-4xl md:text-7xl placeholder-primary w-full;
+  @apply text-primary text-3xl sm:text-4xl md:text-7xl placeholder-primary w-full;
 
-  border-width: 2px;
   text-align: center;
+  border-width: 3px;
 
   &::placeholder {
     opacity: 0.25;
   }
 }
 
+.feel-lucky {
+  @apply text-center;
+}
+
 .feel-lucky-list {
-  @apply grid grid-flow-col-dense mt-10;
+  @apply grid grid-flow-col-dense mt-5 lg:mt-10;
 }
 .feel-lucky-list__item {
 }
@@ -109,7 +113,7 @@ section {
 
   text-transform: uppercase;
 
-  span {
+  strong {
     @apply transform -rotate-45 #{!important};
 
     display: inline-block;

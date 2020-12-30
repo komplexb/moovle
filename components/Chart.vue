@@ -11,7 +11,7 @@
     >
     </bars>
 
-    <h1>Legend</h1>
+    <h1 v-show="false">Legend</h1>
     <ul class="legend">
       <li
         v-for="(stat, idx) in stats.values"

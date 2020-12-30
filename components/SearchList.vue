@@ -1,29 +1,12 @@
 <template>
-  <div>
-    <ul v-if="results.length > 0">
+  <section>
+    <ul v-if="results.length > 0" class="search-list">
       <li v-for="character in results" :key="character.id">
-        <!--
-        <img
-          :src="`${character.thumbnail.path}.${character.thumbnail.extension}`"
-          alt="character.name"
-        />
-        -->
-        <nuxt-link
-          :to="{
-            path: `/character/${character.id}`,
-            params: { id: character.id },
-            props: { character },
-          }"
-        >
-          <strong>{{ character.name }}</strong>
-        </nuxt-link>
-        <p v-if="character.description">
-          {{ character.description | formatDescription(true) }}
-        </p>
+        <CharacterCard :character="character" />
       </li>
     </ul>
     <div v-else>Sorry we haven't created your hero yet, please try again.</div>
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -85,3 +68,12 @@ export default Vue.extend({
   },
 })
 </script>
+
+<style lang="scss" scoped>
+section {
+  @apply mt-4 md:mt-8;
+}
+.search-list {
+  @apply grid lg:grid-cols-2 2xl:grid-cols-3;
+}
+</style>

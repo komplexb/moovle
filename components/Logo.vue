@@ -6,10 +6,10 @@
 
 <style>
 .Logo {
+  @apply h-24 w-24 xs:h-36 xs:w-36 md:h-48 md:w-48;
+
   animation: 1s appear;
   margin: auto;
-  width: 200px;
-  height: 200px;
 }
 
 @keyframes appear {
