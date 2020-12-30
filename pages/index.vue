@@ -1,6 +1,6 @@
 <template>
   <div class="container text-center">
-    <div>
+    <section>
       <input
         v-model="searchQuery"
         type="text"
@@ -8,20 +8,20 @@
         placeholder="find a hero/villain"
         @keyup="handleEnter"
       />
-    </div>
+    </section>
     <section v-if="searchQuery.length === 0" class="feel-lucky">
       <h2>Browse characters starting with this letter...</h2>
-      <ul class="search-list px-40">
+      <ul class="feel-lucky-list">
         <li
           v-for="(letter, idx) in iFeelLucky()"
           :key="letter.id"
-          class="search-list__item"
+          class="feel-lucky-list__item"
         >
           <button
-            :class="['search-list__button', getButtonClass(idx)]"
+            :class="['feel-lucky-list__button', getButtonClass(idx)]"
             @click="searchQuery = letter"
           >
-            {{ letter }}
+            <span>{{ letter }}</span>
           </button>
         </li>
       </ul>
@@ -83,9 +83,12 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+section {
+  @apply my-2;
+}
 .search-box {
   @apply h-24 border-primary rounded-lg focus:border-red-300 focus:ring-2 focus:ring-red-200 focus:ring-opacity-50 mt-4 md:mt-8;
-  @apply text-primary text-3xl md:text-7xl placeholder-primary w-full;
+  @apply text-primary text-4xl md:text-7xl placeholder-primary w-full;
 
   border-width: 2px;
   text-align: center;
@@ -95,21 +98,26 @@ export default Vue.extend({
   }
 }
 
-.search-list {
-  @apply grid grid-cols-4 gap-4;
+.feel-lucky-list {
+  @apply grid grid-flow-col-dense mt-10;
 }
-.search-list__item {
+.feel-lucky-list__item {
 }
 
-.search-list__button {
-  @apply rounded-md h-24 w-24 text-white;
+.feel-lucky-list__button {
+  @apply rounded-md h-12 md:h-24 w-12 md:w-24 text-white transform rotate-45;
 
   text-transform: uppercase;
+
+  span {
+    @apply transform -rotate-45 #{!important};
+
+    display: inline-block;
+  }
 }
 
 .bookmarks-list {
   @apply grid grid-flow-col-dense;
-  // grid-cols-4 gap-4;
 }
 
 .bookmarks__button {

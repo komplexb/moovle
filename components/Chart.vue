@@ -74,7 +74,7 @@ svg.bar {
   align-items: center;
 
   &::before {
-    @apply rounded-sm list-inside mr-2 h-4 w-4;
+    @apply rounded-sm mr-2 h-4 w-4;
 
     content: '';
     display: inline-block;
