@@ -1,7 +1,9 @@
 <template>
   <ul v-if="comics.length > 0" class="comics">
     <li v-for="comic in comics" :key="comic.id">
-      <Card :item="comic" />
+      <a :href="comicLink(comic)" title="Click for Details" target="_blank">
+        <Card :item="comic" :options="options" />
+      </a>
     </li>
   </ul>
 </template>
@@ -34,9 +36,24 @@ export default Vue.extend({
   data() {
     return {
       comics: [],
+      options: {
+        cardType: 'comic',
+      },
     }
+  },
+  methods: {
+    comicLink(comic: Object): String {
+      // @ts-ignore
+      return comic.urls[0]?.url || ''
+    },
   },
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.comics {
+  a {
+    display: inline-block;
+  }
+}
+</style>

@@ -1,17 +1,24 @@
 <template>
-  <div class="card">
+  <div
+    :class="[
+      'card',
+      {
+        'card--portrait-image': isComic,
+      },
+    ]"
+  >
     <div
       :class="[
         'card__image',
         {
-          'card__image--unavailable': imageUnavailable(item.thumbnail.path),
+          'card__image--unavailable': imageUnavailable,
         },
       ]"
     >
       <img
-        :src="`${item.thumbnail.path}/standard_medium.${item.thumbnail.extension}`"
-        :srcset="`${item.thumbnail.path}/standard_xlarge.${item.thumbnail.extension} 2x`"
-        :alt="item.name"
+        :src="`${item.thumbnail.path}/${imageFormat}_medium.${item.thumbnail.extension}`"
+        :srcset="`${item.thumbnail.path}/${imageFormat}_xlarge.${item.thumbnail.extension} 2x`"
+        :alt="imageUnavailable ? 'Image Unavailable' : item.name"
       />
     </div>
     <div class="card__details">
@@ -34,10 +41,21 @@ export default Vue.extend({
       default: () => ({}),
       required: true,
     },
+    options: {
+      type: Object,
+      default: () => ({}),
+      required: false,
+    },
   },
-  methods: {
-    imageUnavailable(path: String): Boolean {
-      return path.includes('image_not_available')
+  computed: {
+    imageUnavailable(): Boolean {
+      return this.item.thumbnail.path.includes('image_not_available')
+    },
+    imageFormat(): String {
+      return this.isComic ? 'portrait' : 'standard'
+    },
+    isComic(): String {
+      return this.options?.cardType === 'comic'
     },
   },
 })
@@ -78,6 +96,19 @@ export default Vue.extend({
 .card__image--unavailable {
   img {
     @apply rounded-none object-left-bottom;
+  }
+}
+
+.card--portrait-image {
+  img {
+    @apply object-cover h-32 w-24 rounded-sm transition-all;
+  }
+
+  &:hover {
+    img {
+      @apply shadow-md transform scale-150 border-primary-alt;
+      border-width: 1px;
+    }
   }
 }
 </style>

@@ -13,13 +13,16 @@
       </li>
     </ul>
     <img
-      v-if="hasImage"
+      v-if="isImageReady"
       :src="`${character.thumbnail.path}/portrait_incredible.${character.thumbnail.extension}`"
       :srcset="`${character.thumbnail.path}/portrait_uncanny.${character.thumbnail.extension} 2x`"
-      :alt="character.name"
+      :alt="imageUnavailable ? 'Image Unavailable' : character.name"
     />
     <Chart :stats="stats" />
     <Comics :id="id" />
+    <a :href="comicLink" target="_blanks">{{
+      `View All ${stats.values[0]} ${character.name} Comics`
+    }}</a>
   </div>
 </template>
 
@@ -80,29 +83,24 @@ export default Vue.extend({
         ],
       }
     },
-    comics(): {} {
-      const {
-        // @ts-ignore
-        comics: { items },
-        // @ts-ignore
-        urls,
-      } = this.character
-
-      const comiclink = urls.find(
+    comicLink(): String {
+      // @ts-ignore
+      const comiclink = this.character?.urls?.find(
         (el: { type: string; url: string }) => el.type === 'comiclink'
       )
-      return {
-        items,
-        url: comiclink?.url || '',
-      }
+      return comiclink?.url || ''
     },
     description(): String {
       // @ts-ignore
       return this.character?.description || 'No description provided.'
     },
-    hasImage(): Boolean {
+    isImageReady(): Boolean {
       // @ts-ignore
       return this.character?.thumbnail
+    },
+    imageUnavailable(): Boolean {
+      // @ts-ignore
+      return this.character.thumbnail.path.includes('image_not_available')
     },
   },
 })
