@@ -22,7 +22,9 @@
       />
     </div>
     <div class="card__details">
-      <strong>{{ item.name || item.title | truncate(25) }}</strong>
+      <strong :class="{ truncate: item.description }">{{
+        item.name || item.title
+      }}</strong>
       <p v-if="item.description" class="card__description">
         {{ item.description | stripHtml | truncate }}
       </p>

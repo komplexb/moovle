@@ -25,7 +25,7 @@ export default Vue.extend({
     // @ts-ignore
     const hash = this.generateHash(timestamp)
     const auth = `?apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
-    const params = `&orderBy=-onsaleDate&limit=5` // show last 5 comics in descending order
+    const params = `&orderBy=-onsaleDate&limit=6` // show recent n comics in descending order
 
     const response = await fetch(
       `${this.$config.baseURL}/characters/${this.id}/comics${auth}${params}`
