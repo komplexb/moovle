@@ -11,5 +11,5 @@ Vue.filter('formatDescription', function (value, truncate = false) {
   })
 
   // short descriptions on home page
-  return truncate ? `${value.slice(0, 100)}...` : value
+  return truncate ? `${value.slice(0, 90)}...` : value
 })

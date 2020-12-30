@@ -1,8 +1,8 @@
 <template>
   <div class="container px-4 m:px-40">
-    <h1>{{ character.name }}</h1>
-    <p v-if="description.length > 0">
-      {{ character.description | formatDescription }}
+    <strong>{{ character.name }}</strong>
+    <p>
+      {{ description | formatDescription }}
     </p>
     <strong>Learn More</strong>
     <ul>
@@ -19,12 +19,12 @@
       :alt="character.name"
     />
     <Chart :stats="stats" />
+    <Comics :id="id" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import md5 from 'md5'
 // @ts-ignore
 import Bars from 'vuebars'
 Vue.use(Bars)
@@ -46,11 +46,12 @@ export default Vue.extend({
   },
   async fetch() {
     const timestamp = Date.now()
+    // @ts-ignore
     const hash = this.generateHash(timestamp)
-    const params = `${this.id}?apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
+    const params = `?apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
 
     const response = await fetch(
-      `${this.$config.baseURL}/characters/${params}`
+      `${this.$config.baseURL}/characters/${this.id}${params}`
     ).then((response) => response.json())
 
     this.character = response.data.results[0]
@@ -97,18 +98,11 @@ export default Vue.extend({
     },
     description(): String {
       // @ts-ignore
-      return this.character?.description || ''
+      return this.character?.description || 'No description provided.'
     },
     hasImage(): Boolean {
+      // @ts-ignore
       return this.character?.thumbnail
-    },
-  },
-  methods: {
-    // Todo: a mixin would be nice, but we only do this twice
-    generateHash(timestamp: Number): String {
-      return md5(
-        `${timestamp}${this.$config.marvelPrk}${this.$config.marvelPuk}`
-      )
     },
   },
 })

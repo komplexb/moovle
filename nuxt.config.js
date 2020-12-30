@@ -17,7 +17,10 @@ export default {
   css: ['@/assets/css/main.scss'],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: ['~/plugins/filter/formatDescription.js'],
+  plugins: [
+    '~/plugins/filter/formatDescription.js',
+    '~/plugins/mixin/generateHash.js'
+  ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -49,8 +52,13 @@ export default {
     marvelPuk: process.env.MARVEL_PUK,
     marvelPrk: process.env.MARVEL_PRK
   },
+
   privateRuntimeConfig: {
     marvelPuk: process.env.MARVEL_PUK,
     marvelPrk: process.env.MARVEL_PRK
+  },
+
+  generate: {
+    fallback: true
   }
 }

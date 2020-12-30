@@ -2,7 +2,15 @@
   <section>
     <ul v-if="results.length > 0" class="search-list">
       <li v-for="character in results" :key="character.id">
-        <CharacterCard :character="character" />
+        <nuxt-link
+          :to="{
+            path: `/character/${character.id}`,
+            params: { id: character.id },
+            props: { character },
+          }"
+        >
+          <Card :item="character" />
+        </nuxt-link>
       </li>
     </ul>
     <div v-else>Sorry we haven't created your hero yet, please try again.</div>
@@ -11,7 +19,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import md5 from 'md5'
 
 export default Vue.extend({
   name: 'SearchList',
@@ -28,13 +35,13 @@ export default Vue.extend({
   },
   async fetch() {
     const timestamp = Date.now()
+    // @ts-ignore
     const hash = this.generateHash(timestamp)
-    const params = `${this.queryType ? 'name' : 'nameStartsWith'}=${
-      this.find
-    }&apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
+    const auth = `?apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
+    const params = `&${this.queryType ? 'name' : 'nameStartsWith'}=${this.find}`
 
     const response = await fetch(
-      `${this.$config.baseURL}/characters?${params}`
+      `${this.$config.baseURL}/characters${auth}${params}`
     ).then((response) => response.json())
 
     this.results = response.data.results
@@ -56,14 +63,6 @@ export default Vue.extend({
           this.$fetch()
         }, 200)
       }
-    },
-  },
-  methods: {
-    // Todo: a mixin would be nice, but we only do this twice
-    generateHash(timestamp: Number): String {
-      return md5(
-        `${timestamp}${this.$config.marvelPrk}${this.$config.marvelPuk}`
-      )
     },
   },
 })
