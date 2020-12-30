@@ -2,7 +2,7 @@
   <div class="container px-4 m:px-40">
     <strong>{{ character.name }}</strong>
     <p>
-      {{ description | formatDescription }}
+      {{ description | stripHtml }}
     </p>
     <strong>Learn More</strong>
     <ul>
@@ -20,9 +20,10 @@
     />
     <Chart :stats="stats" />
     <Comics :id="id" />
-    <a :href="comicLink" target="_blanks">{{
-      `View All ${stats.values[0]} ${character.name} Comics`
-    }}</a>
+    <a :href="comicLink" target="_blanks">
+      View all {{ stats.values[0] }} comics
+      <strong>{{ character.name }}</strong> appears in
+    </a>
   </div>
 </template>
 

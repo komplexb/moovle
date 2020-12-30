@@ -1,7 +1,7 @@
 <template>
   <ul v-if="comics.length > 0" class="comics">
     <li v-for="comic in comics" :key="comic.id">
-      <a :href="comicLink(comic)" title="Click for Details" target="_blank">
+      <a :href="comicLink(comic)" :title="comic.title" target="_blank">
         <Card :item="comic" :options="options" />
       </a>
     </li>

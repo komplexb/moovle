@@ -18,7 +18,8 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    '~/plugins/filter/formatDescription.js',
+    '~/plugins/filter/stripHtml.js',
+    '~/plugins/filter/truncate.js',
     '~/plugins/mixin/generateHash.js'
   ],
 

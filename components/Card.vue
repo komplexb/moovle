@@ -22,9 +22,9 @@
       />
     </div>
     <div class="card__details">
-      <strong>{{ item.name || item.title }}</strong>
+      <strong>{{ item.name || item.title | truncate(25) }}</strong>
       <p v-if="item.description" class="card__description">
-        {{ item.description | formatDescription(true) }}
+        {{ item.description | stripHtml | truncate }}
       </p>
     </div>
   </div>
@@ -54,7 +54,7 @@ export default Vue.extend({
     imageFormat(): String {
       return this.isComic ? 'portrait' : 'standard'
     },
-    isComic(): String {
+    isComic(): Boolean {
       return this.options?.cardType === 'comic'
     },
   },
