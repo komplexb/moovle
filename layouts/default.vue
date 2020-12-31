@@ -22,6 +22,11 @@ export default Vue.extend({
 
 <style lang="scss">
 .page-character-id {
-  @apply bg-blue-50;
+  @apply transition transition-colors;
+  background: linear-gradient(
+    45deg,
+    var(--start-bg, --color-primary-alt),
+    var(--end-bg, --color-secondary-alt)
+  );
 }
 </style>

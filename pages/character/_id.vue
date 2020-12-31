@@ -2,7 +2,6 @@
   <div class="container">
     <header>
       <h1>{{ character.name }}</h1>
-      {{ getColors() }}
     </header>
     <main class="grid md:grid-cols-7 gap-4">
       <div class="content-block md:col-span-2">
@@ -39,6 +38,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
+// @ts-ignore
+import analyze from 'rgbaster'
 // @ts-ignore
 import Bars from 'vuebars'
 Vue.use(Bars)
@@ -124,15 +125,55 @@ export default Vue.extend({
       return this.character.thumbnail.path.includes('image_not_available')
     },
   },
+  mounted() {
+    this.$nextTick(function () {
+      this.setBackgroundColors()
+    })
+  },
+  updated() {
+    this.$nextTick(function () {
+      this.setBackgroundColors()
+    })
+  },
+  methods: {
+    async setBackgroundColors() {
+      // @ts-ignore
+      const path = `${this.character?.thumbnail?.path}.${this.character?.thumbnail?.extension}`
+      await analyze(path)
+        .then((colors: []) => {
+          if (document) {
+            document.documentElement.style.setProperty(
+              '--start-bg',
+              // @ts-ignore
+              colors[0].color
+            )
+            document.documentElement.style.setProperty(
+              '--end-bg',
+              // @ts-ignore
+              colors[colors.length - 1].color
+            )
+          }
+        })
+        .catch((e: Error) => {
+          console.error("Can't analyze unavailable image", e)
+        })
+    },
+  },
 })
 </script>
+
 <style lang="scss" scoped>
 .character-image {
   height: 390px;
 }
 
 header {
-  @apply bg-white rounded-lg shadow-md p-2 mb-4 h-28;
+  @apply rounded-lg shadow-md p-2 mb-4 h-28 bg-white;
+  /* background: linear-gradient(
+    45deg,
+    var(--start-bg, --color-primary-alt),
+    var(--end-bg, --color-secondary-alt)
+  ); */
 }
 .content-block {
   @apply bg-white rounded-lg shadow-md p-2;
