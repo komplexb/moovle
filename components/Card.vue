@@ -82,9 +82,9 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .card {
-  @apply grid grid-cols-3 gap-2 mb-2 p-2 mx-auto;
-  @apply w-full xs:w-4/5 md:w-96 lg:h-36;
-  @apply border-secondary border-2 rounded-lg shadow-inner shadow-sm;
+  @apply grid grid-cols-3 gap-2 mb-2 p-2 mx-auto; // position
+  @apply w-full xs:w-4/5 md:w-96 lg:h-36; // size
+  @apply border-secondary border-2 rounded-lg shadow-inner shadow-sm; // styles
 }
 
 .card__details {
@@ -119,6 +119,7 @@ export default Vue.extend({
 }
 
 .card--comic {
+  @apply h-40 w-full; // size
   img {
     @apply object-cover h-32 w-24 rounded-sm transition-all;
   }

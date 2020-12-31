@@ -1,11 +1,18 @@
 <template>
-  <ul v-if="comics.length > 0" class="comics">
-    <li v-for="comic in comics" :key="comic.id">
-      <a :href="comicLink(comic)" :title="comic.title" target="_blank">
-        <Card :item="comic" :options="options" />
-      </a>
-    </li>
-  </ul>
+  <section>
+    <h1>Recent comics</h1>
+    <ul v-if="comics.length > 0" class="comics">
+      <li v-for="comic in comics" :key="comic.id">
+        <a :href="getComicLink(comic)" :title="comic.title" target="_blank">
+          <Card :item="comic" :options="options" />
+        </a>
+      </li>
+    </ul>
+    <a :href="context.comicLink" target="_blank">
+      View all {{ context.comicCount }} comics featuring
+      <strong>{{ context.character }}</strong>
+    </a>
+  </section>
 </template>
 
 <script lang="ts">
@@ -18,6 +25,11 @@ export default Vue.extend({
       type: String,
       required: true,
       default: '',
+    },
+    context: {
+      type: Object,
+      required: true,
+      default: () => ({}),
     },
   },
   async fetch() {
@@ -42,7 +54,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    comicLink(comic: Object): String {
+    getComicLink(comic: Object): String {
       // @ts-ignore
       return comic.urls[0]?.url || ''
     },
@@ -50,10 +62,12 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .comics {
+  @apply grid lg:grid-cols-2 gap-x-4;
+
   a {
-    display: inline-block;
+    // display: inline-block;
   }
 }
 </style>

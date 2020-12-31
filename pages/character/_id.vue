@@ -1,29 +1,39 @@
 <template>
-  <div class="container px-4 m:px-40">
-    <strong>{{ character.name }}</strong>
-    <p>
-      {{ description | stripHtml }}
-    </p>
-    <strong>Learn More</strong>
-    <ul>
-      <li v-for="detail in character.urls" :key="detail.id">
-        <a :href="detail.url" target="_blank">{{
-          detail.type | formatLinks
-        }}</a>
-      </li>
-    </ul>
-    <img
-      v-if="isImageReady"
-      :src="`${character.thumbnail.path}/portrait_incredible.${character.thumbnail.extension}`"
-      :srcset="`${character.thumbnail.path}/portrait_uncanny.${character.thumbnail.extension} 2x`"
-      :alt="imageUnavailable ? 'Image Unavailable' : character.name"
-    />
-    <Chart :stats="stats" />
-    <Comics :id="id" />
-    <a :href="comicLink" target="_blanks">
-      View all {{ stats.values[0] }} comics
-      <strong>{{ character.name }}</strong> appears in
-    </a>
+  <div class="container">
+    <header>
+      <h1>{{ character.name }}</h1>
+      {{ getColors() }}
+    </header>
+    <main class="grid md:grid-cols-7 gap-4">
+      <div class="content-block md:col-span-2">
+        <img
+          v-if="isImageReady"
+          class="character-image"
+          :src="`${character.thumbnail.path}/portrait_incredible.${character.thumbnail.extension}`"
+          :srcset="`${character.thumbnail.path}/portrait_uncanny.${character.thumbnail.extension} 2x`"
+          :alt="imageUnavailable ? 'Image Unavailable' : character.name"
+        />
+        <Chart :stats="stats" />
+        <p>
+          <a :href="characterLinks.detail" target="_blank"
+            >Learn more about <strong>{{ character.name }}</strong>
+          </a>
+        </p>
+      </div>
+      <div class="content-block md:col-span-5">
+        <p>
+          {{ description | stripHtml }}
+        </p>
+        <Comics
+          :id="id"
+          :context="{
+            comicLink: characterLinks.comic,
+            comicCount: stats.values[0],
+            character: character.name,
+          }"
+        />
+      </div>
+    </main>
   </div>
 </template>
 
@@ -84,12 +94,22 @@ export default Vue.extend({
         ],
       }
     },
-    comicLink(): String {
-      // @ts-ignore
-      const comiclink = this.character?.urls?.find(
-        (el: { type: string; url: string }) => el.type === 'comiclink'
-      )
-      return comiclink?.url || ''
+    characterLinks(): Object {
+      const comic =
+        // @ts-ignore
+        this.character?.urls?.find(
+          (el: { type: string; url: string }) => el.type === 'comiclink'
+        ).url || ''
+
+      const detail =
+        // @ts-ignore
+        this.character?.urls?.find(
+          (el: { type: string; url: string }) => el.type === 'detail'
+        ).url || ''
+      return {
+        comic,
+        detail,
+      }
     },
     description(): String {
       // @ts-ignore
@@ -106,3 +126,15 @@ export default Vue.extend({
   },
 })
 </script>
+<style lang="scss" scoped>
+.character-image {
+  height: 390px;
+}
+
+header {
+  @apply bg-white rounded-lg shadow-md p-2 mb-4 h-28;
+}
+.content-block {
+  @apply bg-white rounded-lg shadow-md p-2;
+}
+</style>

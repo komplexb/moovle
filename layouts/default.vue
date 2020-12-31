@@ -1,6 +1,8 @@
 <template>
   <div :class="`page-${$route.name}`">
-    <nuxt-link v-if="isCharacterPage" to="/">Back</nuxt-link>
+    <p v-if="isCharacterPage" class="text-center">
+      <nuxt-link to="/">Back</nuxt-link>
+    </p>
     <Logo v-else />
     <Nuxt keep-alive />
   </div>
@@ -18,4 +20,8 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped></style>
+<style lang="scss">
+.page-character-id {
+  @apply bg-blue-50;
+}
+</style>
