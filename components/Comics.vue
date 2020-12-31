@@ -1,17 +1,22 @@
 <template>
   <section>
     <h1>Recent comics</h1>
-    <ul v-if="comics.length > 0" class="comics">
-      <li v-for="comic in comics" :key="comic.id">
-        <a :href="getComicLink(comic)" :title="comic.title" target="_blank">
-          <Card :item="comic" :options="options" />
-        </a>
-      </li>
-    </ul>
-    <a :href="context.comicLink" target="_blank">
-      View all {{ context.comicCount }} comics featuring
-      <strong>{{ context.character }}</strong>
-    </a>
+    <template v-if="comics.length > 0">
+      <ul class="comics">
+        <li v-for="comic in comics" :key="comic.id">
+          <a :href="getComicLink(comic)" :title="comic.title" target="_blank">
+            <Card :item="comic" :options="options" />
+          </a>
+        </li>
+      </ul>
+      <a :href="context.comicLink" target="_blank">
+        View all {{ context.comicCount }} comics featuring
+        <strong>{{ context.character }}</strong>
+      </a>
+    </template>
+    <p v-else>
+      <strong>{{ context.character }}</strong> doesn't have any comics.
+    </p>
   </section>
 </template>
 

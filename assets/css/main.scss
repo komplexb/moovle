@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@900&display=swap');
+
 :root {
   // Twisted Spot Palette
   // https://mycolor.space/?hex=%23FF5722&sub=1
@@ -36,4 +38,12 @@ html {
 }
 .btn--secondary-alt {
   @apply bg-secondary-alt;
+}
+
+h1 {
+  @apply font-bold text-xl md:text-3xl text-primary;
+}
+
+strong {
+  @apply font-bold;
 }

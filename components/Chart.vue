@@ -1,5 +1,5 @@
 <template>
-  <div class="chart">
+  <section class="chart">
     <bars
       class="bar"
       :data="stats.values"
@@ -11,7 +11,6 @@
     >
     </bars>
 
-    <h1 v-show="false">Legend</h1>
     <ul class="legend">
       <li
         v-for="(stat, idx) in stats.values"
@@ -21,7 +20,7 @@
         {{ stats.labels[idx] }}: {{ stat }}
       </li>
     </ul>
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -41,7 +40,7 @@ export default Vue.extend({
 
 <style lang="scss">
 .chart {
-  display: inline-block;
+  @apply grid grid-cols-2;
 }
 svg.bar {
   width: 150px;

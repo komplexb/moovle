@@ -13,13 +13,14 @@
           :alt="imageUnavailable ? 'Image Unavailable' : character.name"
         />
         <Chart :stats="stats" />
-        <p>
+        <div>
           <a :href="characterLinks.detail" target="_blank"
             >Learn more about <strong>{{ character.name }}</strong>
           </a>
-        </p>
+        </div>
       </div>
       <div class="content-block md:col-span-5">
+        <h1>Description</h1>
         <p>
           {{ description | stripHtml }}
         </p>
@@ -164,18 +165,27 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .character-image {
-  height: 390px;
+  @apply rounded-md;
+
+  width: 100%;
 }
 
 header {
-  @apply rounded-lg shadow-md p-2 mb-4 h-28 bg-white;
-  /* background: linear-gradient(
-    45deg,
-    var(--start-bg, --color-primary-alt),
-    var(--end-bg, --color-secondary-alt)
-  ); */
+  @apply rounded-lg shadow-md p-2 mb-4 h-28 bg-white flex items-center justify-center;
+
+  h1 {
+    @apply text-3xl md:text-5xl text-black font-black;
+
+    font-family: 'Titillium Web', sans-serif;
+    text-transform: uppercase;
+    word-break: break-all;
+  }
 }
 .content-block {
   @apply bg-white rounded-lg shadow-md p-2;
+
+  p {
+    @apply text-primary-alt font-semibold;
+  }
 }
 </style>

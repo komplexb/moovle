@@ -1,7 +1,9 @@
 <template>
   <div :class="`page-${$route.name}`">
-    <p v-if="isCharacterPage" class="text-center">
-      <nuxt-link to="/">Back</nuxt-link>
+    <p v-if="isCharacterPage" class="text-center py-2 mb-2">
+      <nuxt-link class="text-white align-middle" to="/" title="Back to Home">
+        <img src="~/assets/images/moovle-white.png" alt="" class="logo-small" />
+      </nuxt-link>
     </p>
     <Logo v-else />
     <Nuxt keep-alive />
@@ -28,5 +30,10 @@ export default Vue.extend({
     var(--start-bg, --color-primary-alt),
     var(--end-bg, --color-secondary-alt)
   );
+}
+.logo-small {
+  @apply h-4;
+
+  display: inline-block;
 }
 </style>
