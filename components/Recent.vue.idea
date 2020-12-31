@@ -1,0 +1,33 @@
+<template>
+  <div class="favourites">
+    <h2>Your favourites</h2>
+
+    <ul class="bookmarks-list">
+      <li
+        v-for="hero in ['Thor', 'Gommorah', 'Iron Man', 'Thanos', 'Ultron']"
+        :key="hero.id"
+        class="bookmarks__item"
+      >
+        <button :class="['bookmarks__button']">
+          {{ hero }}
+        </button>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({})
+</script>
+
+<style scoped>
+.bookmarks-list {
+  @apply grid grid-flow-col-dense;
+}
+
+.bookmarks__button {
+  @apply rounded-md bg-primary-alt text-white p-4;
+}
+</style>

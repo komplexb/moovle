@@ -3,7 +3,7 @@
     :class="[
       'card',
       {
-        'card--portrait-image': isComic,
+        'card--comic': isComic,
       },
     ]"
   >
@@ -16,8 +16,8 @@
       ]"
     >
       <img
-        :src="`${item.thumbnail.path}/${imageFormat}_medium.${item.thumbnail.extension}`"
-        :srcset="`${item.thumbnail.path}/${imageFormat}_xlarge.${item.thumbnail.extension} 2x`"
+        :src="imageSize('default')"
+        :srcset="`${imageSize('retina')} 2x`"
         :alt="imageUnavailable ? 'Image Unavailable' : item.name"
       />
     </div>
@@ -58,6 +58,23 @@ export default Vue.extend({
     },
     isComic(): Boolean {
       return this.options?.cardType === 'comic'
+    },
+  },
+  methods: {
+    imageSize(size = 'default'): Object {
+      const { path, extension } = this.item.thumbnail
+      const sizes = {
+        portrait: {
+          default: 'portrait_incredible',
+          retina: 'portrait_uncanny',
+        },
+        standard: {
+          default: 'standard_medium',
+          retina: 'standard_xlarge',
+        },
+      }
+      // @ts-ignore
+      return `${path}/${sizes[this.imageFormat][size]}.${extension}`
     },
   },
 })
@@ -101,15 +118,14 @@ export default Vue.extend({
   }
 }
 
-.card--portrait-image {
+.card--comic {
   img {
     @apply object-cover h-32 w-24 rounded-sm transition-all;
   }
 
   &:hover {
     img {
-      @apply shadow-md transform scale-150 border-primary-alt;
-      border-width: 1px;
+      @apply shadow-md transform scale-150;
     }
   }
 }

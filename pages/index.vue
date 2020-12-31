@@ -13,7 +13,7 @@
       <strong>Browse characters starting with this letter...</strong>
       <ul class="feel-lucky-list">
         <li
-          v-for="(letter, idx) in iFeelLucky()"
+          v-for="(letter, idx) in iFeelLucky"
           :key="letter.id"
           class="feel-lucky-list__item"
         >
@@ -27,23 +27,6 @@
       </ul>
     </section>
     <SearchList v-else :find="searchQuery" :query-type="findName" />
-    <footer v-if="false">
-      <div class="favourites">
-        <h2>Your favourites</h2>
-
-        <ul class="bookmarks-list">
-          <li
-            v-for="hero in ['Thor', 'Gommorah', 'Iron Man', 'Thanos', 'Ultron']"
-            :key="hero.id"
-            class="bookmarks__item"
-          >
-            <button :class="['bookmarks__button']">
-              {{ hero }}
-            </button>
-          </li>
-        </ul>
-      </div>
-    </footer>
   </div>
 </template>
 
@@ -58,8 +41,7 @@ export default Vue.extend({
       findName: false,
     }
   },
-  computed: {},
-  methods: {
+  computed: {
     iFeelLucky(): [] {
       // Load Chance
       const Chance = require('chance')
@@ -67,6 +49,8 @@ export default Vue.extend({
 
       return chance.unique(chance.letter, 4)
     },
+  },
+  methods: {
     getButtonClass(idx: number): Object {
       return {
         'btn--primary': idx === 0,
@@ -118,13 +102,5 @@ section {
 
     display: inline-block;
   }
-}
-
-.bookmarks-list {
-  @apply grid grid-flow-col-dense;
-}
-
-.bookmarks__button {
-  @apply rounded-md bg-primary-alt text-white p-4;
 }
 </style>
