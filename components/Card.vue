@@ -74,7 +74,14 @@ export default Vue.extend({
         },
       }
       // @ts-ignore
-      return `${path}/${sizes[this.imageFormat][size]}.${extension}`
+      return `${this.stripHttps(path)}/${
+        // @ts-ignore
+        sizes[this.imageFormat][size]
+      }.${extension}`
+    },
+    stripHttps(path: String): String {
+      // strip protocol to force https on prod
+      return path.replace('http:', '')
     },
   },
 })

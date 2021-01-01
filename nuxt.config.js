@@ -51,7 +51,8 @@ export default {
   publicRuntimeConfig: {
     baseURL: 'https://gateway.marvel.com/v1/public',
     marvelPuk: process.env.MARVEL_PUK,
-    marvelPrk: process.env.MARVEL_PRK
+    marvelPrk: process.env.MARVEL_PRK,
+    isDev: process.env.NODE_ENV !== 'production'
   },
 
   privateRuntimeConfig: {
