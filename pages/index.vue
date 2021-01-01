@@ -34,19 +34,13 @@
 
 <script lang="ts">
 import Vue from 'vue'
-// @ts-ignore
-import sanitizeHtml from 'sanitize-html'
-
-let debounceTimeoutId: any
 
 export default Vue.extend({
   name: 'Index',
   data() {
     return {
-      cleanQuery: '',
       searchQuery: '',
       findName: false,
-      debounceTimeoutId,
     }
   },
   methods: {
@@ -60,14 +54,6 @@ export default Vue.extend({
     },
     handleQuery(e: KeyboardEvent): void {
       this.findName = e.key === 'Enter'
-
-      clearTimeout(this.debounceTimeoutId)
-
-      this.debounceTimeoutId = setTimeout(() => {
-        this.searchQuery = sanitizeHtml(this.searchQuery.trim(), {
-          allowedTags: [],
-        })
-      }, 300)
     },
     iFeelLucky(): [] {
       // Load Chance

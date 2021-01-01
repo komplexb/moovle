@@ -31,6 +31,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
+// @ts-ignore
+import sanitizeHtml from 'sanitize-html'
+
+let debounceTimeoutId: any
 
 export default Vue.extend({
   name: 'SearchList',
@@ -49,23 +53,35 @@ export default Vue.extend({
     const timestamp = Date.now()
     // @ts-ignore
     const hash = this.generateHash(timestamp)
-    const auth = `?apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
-    const params = `&${this.queryType ? 'name' : 'nameStartsWith'}=${this.find}`
+    const params = `?${this.queryType ? 'name' : 'nameStartsWith'}=${
+      this.cleanQuery
+    }`
+    const auth = `&apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
 
     const response = await fetch(
-      `${this.$config.baseURL}/characters${auth}${params}`
+      `${this.$config.baseURL}/characters${params}${auth}`
     ).then((response) => response.json())
 
     this.results = response.data?.results || []
   },
   data() {
     return {
+      cleanQuery: this.find,
+      debounceTimeoutId,
       results: [],
     }
   },
   watch: {
     find(): void {
-      this.$fetch()
+      this.cleanQuery = sanitizeHtml(this.find.trim(), {
+        allowedTags: [],
+      })
+
+      clearTimeout(this.debounceTimeoutId)
+
+      this.debounceTimeoutId = setTimeout(() => {
+        this.$fetch()
+      }, 200)
     },
     queryType(): void {
       this.$fetch()
