@@ -8,7 +8,7 @@
         type="text"
         class="search-box"
         placeholder="find a hero/villain"
-        @keyup="handleEnter"
+        @keyup="handleQuery"
       />
     </section>
     <section v-if="searchQuery.length === 0" class="feel-lucky">
@@ -28,7 +28,7 @@
         </li>
       </ul>
     </section>
-    <SearchList v-else :find="cleanQuery" :query-type="findName" />
+    <SearchList v-else :find="searchQuery" :query-type="findName" />
   </div>
 </template>
 
@@ -37,20 +37,17 @@ import Vue from 'vue'
 // @ts-ignore
 import sanitizeHtml from 'sanitize-html'
 
+let debounceTimeoutId: any
+
 export default Vue.extend({
   name: 'Index',
   data() {
     return {
+      cleanQuery: '',
       searchQuery: '',
       findName: false,
+      debounceTimeoutId,
     }
-  },
-  computed: {
-    cleanQuery(): String {
-      return sanitizeHtml(this.searchQuery.trim(), {
-        allowedTags: [],
-      })
-    },
   },
   methods: {
     getButtonClass(idx: number): Object {
@@ -61,8 +58,16 @@ export default Vue.extend({
         'btn--secondary-alt': idx === 3,
       }
     },
-    handleEnter(e: KeyboardEvent): void {
+    handleQuery(e: KeyboardEvent): void {
       this.findName = e.key === 'Enter'
+
+      clearTimeout(this.debounceTimeoutId)
+
+      this.debounceTimeoutId = setTimeout(() => {
+        this.searchQuery = sanitizeHtml(this.searchQuery.trim(), {
+          allowedTags: [],
+        })
+      }, 300)
     },
     iFeelLucky(): [] {
       // Load Chance
