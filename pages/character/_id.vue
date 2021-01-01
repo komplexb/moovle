@@ -8,8 +8,12 @@
         <img
           v-if="isImageReady"
           class="character-image"
-          :src="`${character.thumbnail.path}/portrait_incredible.${character.thumbnail.extension}`"
-          :srcset="`${character.thumbnail.path}/portrait_uncanny.${character.thumbnail.extension} 2x`"
+          :src="`${stripHttps(character.thumbnail.path)}/portrait_incredible.${
+            character.thumbnail.extension
+          }`"
+          :srcset="`${stripHttps(character.thumbnail.path)}/portrait_uncanny.${
+            character.thumbnail.extension
+          } 2x`"
           :alt="imageUnavailable ? 'Image Unavailable' : character.name"
         />
         <Chart :stats="stats" />
@@ -158,6 +162,10 @@ export default Vue.extend({
         .catch((e: Error) => {
           console.error("Can't analyze unavailable image", e)
         })
+    },
+    stripHttps(path: String): String {
+      // strip protocol to force https on prod
+      return path.replace('http:', '')
     },
   },
 })
