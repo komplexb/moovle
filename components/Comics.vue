@@ -9,7 +9,11 @@
           </a>
         </li>
       </ul>
-      <a :href="context.comicLink" target="_blank">
+      <a
+        v-if="comics.length > fetchLimit"
+        :href="context.comicLink"
+        target="_blank"
+      >
         View all {{ context.comicCount }} comics featuring
         <strong>{{ context.character }}</strong>
       </a>
@@ -42,7 +46,7 @@ export default Vue.extend({
     // @ts-ignore
     const hash = this.generateHash(timestamp)
     const auth = `?apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
-    const params = `&orderBy=-onsaleDate&limit=6` // show recent n comics in descending order
+    const params = `&orderBy=-onsaleDate&limit=${this.fetchLimit}` // show recent n comics in descending order
 
     const response = await fetch(
       `${this.$config.baseURL}/characters/${this.id}/comics${auth}${params}`
@@ -56,6 +60,7 @@ export default Vue.extend({
       options: {
         cardType: 'comic',
       },
+      fetchLimit: 6,
     }
   },
   methods: {

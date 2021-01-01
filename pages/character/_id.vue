@@ -7,13 +7,10 @@
       <div class="content-block md:col-span-2">
         <img
           v-if="isImageReady"
+          loading="lazy"
           class="character-image"
-          :src="`${stripHttps(character.thumbnail.path)}/portrait_incredible.${
-            character.thumbnail.extension
-          }`"
-          :srcset="`${stripHttps(character.thumbnail.path)}/portrait_uncanny.${
-            character.thumbnail.extension
-          } 2x`"
+          :src="`${characterImagePath}/portrait_incredible.${character.thumbnail.extension}`"
+          :srcset="`${characterImagePath}/portrait_uncanny.${character.thumbnail.extension} 2x`"
           :alt="imageUnavailable ? 'Image Unavailable' : character.name"
         />
         <Chart :stats="stats" />
@@ -88,18 +85,6 @@ export default Vue.extend({
     }
   },
   computed: {
-    stats(): {} {
-      // @ts-ignore
-      const { comics, series, stories } = this.character
-      return {
-        labels: ['comics', 'series', 'stories'],
-        values: [
-          comics?.available || 0,
-          series?.available || 0,
-          stories?.available || 0,
-        ],
-      }
-    },
     characterLinks(): Object {
       const comic =
         // @ts-ignore
@@ -121,13 +106,29 @@ export default Vue.extend({
       // @ts-ignore
       return this.character?.description || 'No description provided.'
     },
+    imageUnavailable(): Boolean {
+      // @ts-ignore
+      return this.characterImagePath.includes('image_not_available')
+    },
     isImageReady(): Boolean {
       // @ts-ignore
       return this.character?.thumbnail
     },
-    imageUnavailable(): Boolean {
+    characterImagePath(): String {
       // @ts-ignore
-      return this.character.thumbnail.path.includes('image_not_available')
+      return this.character?.thumbnail?.path.replace('http:', '')
+    },
+    stats(): {} {
+      // @ts-ignore
+      const { comics, series, stories } = this.character
+      return {
+        labels: ['comics', 'series', 'stories'],
+        values: [
+          comics?.available || 0,
+          series?.available || 0,
+          stories?.available || 0,
+        ],
+      }
     },
   },
   mounted() {
@@ -143,7 +144,7 @@ export default Vue.extend({
   methods: {
     async setBackgroundColors() {
       // @ts-ignore
-      const path = `${this.character?.thumbnail?.path}.${this.character?.thumbnail?.extension}`
+      const path = `${this.characterImagePath}.${this.character?.thumbnail?.extension}`
       await analyze(path)
         .then((colors: []) => {
           if (document) {

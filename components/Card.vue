@@ -16,6 +16,7 @@
       ]"
     >
       <img
+        loading="lazy"
         :src="imageSize('default')"
         :srcset="`${imageSize('retina')} 2x`"
         :alt="imageUnavailable ? 'Image Unavailable' : item.name"
