@@ -52,10 +52,16 @@ export default Vue.extend({
     }
   },
   watch: {
-    find(): void {
-      setTimeout(() => {
+    find(val): void {
+      // single characters are likely a "i feel lucky" query
+      // so fetch now, else throttle fetch
+      if (val.length === 1) {
         this.$fetch()
-      }, 200)
+      } else {
+        setTimeout(() => {
+          this.$fetch()
+        }, 200)
+      }
     },
     queryType(val): void {
       if (val) {

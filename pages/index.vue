@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <section class="text-center">
+      <label class="hidden" for="search-box">Search Box</label>
       <input
+        id="search-box"
         v-model="searchQuery"
         type="text"
         class="search-box"
@@ -13,7 +15,7 @@
       <strong>Browse characters starting with this letter...</strong>
       <ul class="feel-lucky-list">
         <li
-          v-for="(letter, idx) in iFeelLucky"
+          v-for="(letter, idx) in iFeelLucky()"
           :key="letter.id"
           class="feel-lucky-list__item"
         >
@@ -41,15 +43,6 @@ export default Vue.extend({
       findName: false,
     }
   },
-  computed: {
-    iFeelLucky(): [] {
-      // Load Chance
-      const Chance = require('chance')
-      const chance = new Chance()
-
-      return chance.unique(chance.letter, 4)
-    },
-  },
   methods: {
     getButtonClass(idx: number): Object {
       return {
@@ -61,6 +54,13 @@ export default Vue.extend({
     },
     handleEnter(e: KeyboardEvent): void {
       this.findName = e.key === 'Enter'
+    },
+    iFeelLucky(): [] {
+      // Load Chance
+      const Chance = require('chance')
+      const chance = new Chance()
+
+      return chance.unique(chance.letter, 4)
     },
   },
 })
