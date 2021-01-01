@@ -28,12 +28,14 @@
         </li>
       </ul>
     </section>
-    <SearchList v-else :find="searchQuery" :query-type="findName" />
+    <SearchList v-else :find="cleanQuery" :query-type="findName" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+// @ts-ignore
+import sanitizeHtml from 'sanitize-html'
 
 export default Vue.extend({
   name: 'Index',
@@ -42,6 +44,13 @@ export default Vue.extend({
       searchQuery: '',
       findName: false,
     }
+  },
+  computed: {
+    cleanQuery(): String {
+      return sanitizeHtml(this.searchQuery.trim(), {
+        allowedTags: [],
+      })
+    },
   },
   methods: {
     getButtonClass(idx: number): Object {

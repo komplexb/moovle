@@ -56,7 +56,7 @@ export default Vue.extend({
       `${this.$config.baseURL}/characters${auth}${params}`
     ).then((response) => response.json())
 
-    this.results = response.data.results
+    this.results = response.data?.results || []
   },
   data() {
     return {
