@@ -14,7 +14,7 @@
           :alt="imageUnavailable ? 'Image Unavailable' : character.name"
         />
         <Chart :stats="stats" />
-        <div>
+        <div class="toast">
           <a :href="characterLinks.detail" target="_blank"
             >Learn more about <strong>{{ character.name }}</strong>
           </a>

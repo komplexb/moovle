@@ -9,14 +9,12 @@
           </a>
         </li>
       </ul>
-      <a
-        v-if="context.comicCount > fetchLimit"
-        :href="context.comicLink"
-        target="_blank"
-      >
-        View all {{ context.comicCount }} comics featuring
-        <strong>{{ context.character }}</strong>
-      </a>
+      <div v-if="context.comicCount > fetchLimit" class="toast">
+        <a :href="context.comicLink" target="_blank">
+          View all {{ context.comicCount }} comics featuring
+          <strong>{{ context.character }}</strong>
+        </a>
+      </div>
     </template>
     <p v-else>
       <strong>{{ context.character }}</strong> doesn't have any comics.

@@ -45,3 +45,11 @@ h1 {
 strong {
   @apply font-bold;
 }
+
+.toast {
+  @apply text-center sm:text-left hover:underline font-normal;
+
+  a {
+    @apply text-primary;
+  }
+}
