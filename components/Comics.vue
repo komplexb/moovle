@@ -1,24 +1,34 @@
 <template>
   <section>
     <h1>Recent comics</h1>
-    <template v-if="comics.length > 0">
-      <ul class="comics">
-        <li v-for="comic in comics" :key="comic.id">
-          <a :href="getComicLink(comic)" :title="comic.title" target="_blank">
-            <Card :item="comic" :options="options" />
-          </a>
-        </li>
-      </ul>
-      <div v-if="context.comicCount > fetchLimit" class="toast">
-        <a :href="context.comicLink" target="_blank">
-          View all {{ context.comicCount }} comics featuring
-          <strong>{{ context.character }}</strong>
-        </a>
+    <template v-if="$fetchState.pending">
+      <div class="flex justify-center">
+        <img src="~/assets/images/loader.gif" alt="Loading" />
       </div>
     </template>
-    <p v-else>
-      <strong>{{ context.character }}</strong> doesn't have any comics.
-    </p>
+    <template v-else-if="$fetchState.error">
+      <p>{{ $fetchState.error.message }}</p>
+    </template>
+    <template v-else>
+      <template v-if="comics.length > 0">
+        <ul class="comics">
+          <li v-for="comic in comics" :key="comic.id">
+            <a :href="getComicLink(comic)" :title="comic.title" target="_blank">
+              <Card :item="comic" :options="options" />
+            </a>
+          </li>
+        </ul>
+        <div v-if="context.comicCount > fetchLimit" class="toast">
+          <a :href="context.comicLink" target="_blank">
+            View all {{ context.comicCount }} comics featuring
+            <strong>{{ context.character }}</strong>
+          </a>
+        </div>
+      </template>
+      <p v-else>
+        <strong>{{ context.character }}</strong> doesn't have any comics.
+      </p>
+    </template>
   </section>
 </template>
 
@@ -43,11 +53,11 @@ export default Vue.extend({
     const timestamp = Date.now()
     // @ts-ignore
     const hash = this.generateHash(timestamp)
-    const auth = `?apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
-    const params = `&orderBy=-onsaleDate&limit=${this.fetchLimit}` // show recent n comics in descending order
+    const params = `?orderBy=-onsaleDate&limit=${this.fetchLimit}` // show recent n comics in descending order
+    const auth = `&apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
 
     const response = await fetch(
-      `${this.$config.baseURL}/characters/${this.id}/comics${auth}${params}`
+      `${this.$config.baseURL}/characters/${this.id}/comics${params}${auth}`
     ).then((response) => response.json())
 
     this.comics = response.data.results

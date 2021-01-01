@@ -3,7 +3,7 @@
     <header>
       <h1>{{ character.name }}</h1>
     </header>
-    <main class="grid md:grid-cols-7 gap-4">
+    <main class="grid md:grid-cols-7 gap-4 pb-6">
       <div class="content-block md:col-span-2">
         <img
           v-if="isImageReady"
