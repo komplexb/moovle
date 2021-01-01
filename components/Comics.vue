@@ -10,7 +10,7 @@
         </li>
       </ul>
       <a
-        v-if="comics.length > fetchLimit"
+        v-if="context.comicCount > fetchLimit"
         :href="context.comicLink"
         target="_blank"
       >
