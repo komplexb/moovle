@@ -72,16 +72,24 @@ export default Vue.extend({
     }
   },
   watch: {
-    find(): void {
+    find(val): void {
+      if (val.length === 0) return
+
       this.cleanQuery = sanitizeHtml(this.find.trim(), {
         allowedTags: [],
       })
 
       clearTimeout(this.debounceTimeoutId)
 
-      this.debounceTimeoutId = setTimeout(() => {
+      // context: i feel lucky
+      // if it's one character don't throttle
+      if (val.length === 1) {
         this.$fetch()
-      }, 200)
+      } else {
+        this.debounceTimeoutId = setTimeout(() => {
+          this.$fetch()
+        }, 200)
+      }
     },
     queryType(): void {
       this.$fetch()
