@@ -1,19 +1,31 @@
 <template>
   <section>
-    <ul v-if="results.length > 0" class="search-list">
-      <li v-for="character in results" :key="character.id">
-        <nuxt-link
-          :to="{
-            path: `/character/${character.id}`,
-            params: { id: character.id },
-            props: { character },
-          }"
-        >
-          <Card :item="character" />
-        </nuxt-link>
-      </li>
-    </ul>
-    <div v-else>Sorry we haven't created your hero yet, please try again.</div>
+    <template v-if="$fetchState.pending">
+      <div class="flex justify-center">
+        <img src="~/assets/images/loader.gif" alt="Loading" />
+      </div>
+    </template>
+    <template v-else-if="$fetchState.error">
+      <p>{{ $fetchState.error.message }}</p>
+    </template>
+    <template v-else>
+      <ul v-if="results.length > 0" class="search-list">
+        <li v-for="character in results" :key="character.id">
+          <nuxt-link
+            :to="{
+              path: `/character/${character.id}`,
+              params: { id: character.id },
+              props: { character },
+            }"
+          >
+            <Card :item="character" />
+          </nuxt-link>
+        </li>
+      </ul>
+      <div v-else class="flex justify-center">
+        Sorry we haven't created your hero yet, please try again.
+      </div>
+    </template>
   </section>
 </template>
 
@@ -60,7 +72,7 @@ export default Vue.extend({
       } else {
         setTimeout(() => {
           this.$fetch()
-        }, 200)
+        }, 100)
       }
     },
     queryType(val): void {
