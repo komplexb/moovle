@@ -8,10 +8,13 @@
         type="text"
         class="search-box"
         placeholder="find a hero/villain"
-        @keyup="handleQuery"
+        @keyup="handleEnter"
       />
     </section>
-    <section v-if="searchQuery.length === 0" class="feel-lucky">
+    <section
+      v-if="searchQuery.length === 0 && $config.isDev"
+      class="feel-lucky"
+    >
       <strong>Browse characters starting with this letter...</strong>
       <ul class="feel-lucky-list">
         <li
