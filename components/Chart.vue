@@ -40,9 +40,11 @@ export default Vue.extend({
 
 <style lang="scss">
 .chart {
-  @apply grid grid-cols-2;
+  @apply grid tablet-portrait:grid-cols-1 grid-cols-2;
 }
 svg.bar {
+  @apply tablet-portrait:mb-4;
+
   width: 150px;
 
   .container {

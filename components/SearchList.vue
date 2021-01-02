@@ -6,7 +6,7 @@
       </div>
     </template>
     <template v-else-if="$fetchState.error">
-      <p>{{ $fetchState.error.message }}</p>
+      <p>Error while fetching results. Please refresh to try again.</p>
     </template>
     <template v-else>
       <ul v-if="results.length > 0" class="search-list">

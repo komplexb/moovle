@@ -16,7 +16,7 @@
         2x`"
           :alt="imageUnavailable ? 'Image Unavailable' : character.name"
         />
-        <h1 v-show="imageUnavailable" class="sm:hidden">
+        <h1 v-show="imageUnavailable" class="sm:hidden mb-4 text-center">
           Character Image Unavailable
         </h1>
         <Chart :stats="stats" />
@@ -148,6 +148,7 @@ export default Vue.extend({
     })
   },
   methods: {
+    // not a perf friendly activity as it's lengthy and blocks the main thread
     async setBackgroundColors() {
       // @ts-ignore
       const path = `${this.characterImagePath}.${this.character?.thumbnail?.extension}`
@@ -193,7 +194,7 @@ header {
   @apply rounded-lg shadow-md p-2 mb-4 h-28 bg-white flex items-center justify-center;
 
   h1 {
-    @apply text-3xl md:text-5xl text-black font-black;
+    @apply text-3xl sm:text-4xl md:text-5xl text-black font-black;
 
     font-family: 'Titillium Web', sans-serif;
     text-transform: uppercase;

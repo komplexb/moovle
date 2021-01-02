@@ -12,7 +12,8 @@ module.exports = {
       },
       screens: {
         'xs-down': { max: '413px' },
-        xs: { min: '414px', max: '639px' }
+        xs: { min: '414px', max: '639px' },
+        'tablet-portrait': { min: '768px', max: '1023px' }
       }
     }
   },

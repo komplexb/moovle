@@ -7,7 +7,7 @@
       </div>
     </template>
     <template v-else-if="$fetchState.error">
-      <p>{{ $fetchState.error.message }}</p>
+      <p>Error while fetching comics. Please refresh try again.</p>
     </template>
     <template v-else>
       <template v-if="comics.length > 0">
