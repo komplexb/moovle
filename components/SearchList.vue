@@ -72,27 +72,27 @@ export default Vue.extend({
     }
   },
   watch: {
-    find(val): void {
+    find(val, oldVal): void {
       if (val.length === 0) return
 
+      if (val !== oldVal) this.fetchNow()
+    },
+  },
+  methods: {
+    fetchNow(yes = false): void {
       this.cleanQuery = sanitizeHtml(this.find.trim(), {
         allowedTags: [],
       })
 
+      // cancel queued fetches
       clearTimeout(this.debounceTimeoutId)
-
-      // context: i feel lucky
-      // if it's one character don't throttle
-      if (val.length === 1) {
+      if (yes) {
         this.$fetch()
       } else {
         this.debounceTimeoutId = setTimeout(() => {
           this.$fetch()
-        }, 200)
+        }, 300)
       }
-    },
-    queryType(): void {
-      this.$fetch()
     },
   },
 })

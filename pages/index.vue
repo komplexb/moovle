@@ -31,7 +31,12 @@
         </li>
       </ul>
     </section>
-    <SearchList v-else :find="searchQuery" :query-type="findName" />
+    <SearchList
+      v-else
+      ref="searchList"
+      :find="searchQuery"
+      :query-type="findName"
+    />
   </div>
 </template>
 
@@ -55,8 +60,16 @@ export default Vue.extend({
         'btn--secondary-alt': idx === 3,
       }
     },
-    handleQuery(e: KeyboardEvent): void {
+    handleEnter(e: KeyboardEvent): void {
       this.findName = e.key === 'Enter'
+      // @ts-ignore
+      // use enter key to search for exact name
+      if (this.findName && this.searchQuery.length > 0) {
+        this.$nextTick(() => {
+          // @ts-ignore
+          this.$refs.searchList.fetchNow(true)
+        })
+      }
     },
     iFeelLucky(): [] {
       // Load Chance
