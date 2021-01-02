@@ -78,8 +78,10 @@ export default Vue.extend({
     handleLucky(query: string): void {
       // @ts-ignore
       this.searchQuery = query
-      // @ts-ignore
-      this.$refs.searchList.fetchNow(true)
+      this.$nextTick(() => {
+        // @ts-ignore
+        this.$refs.searchList.fetchNow(true)
+      })
     },
   },
 })
