@@ -15,7 +15,7 @@
       <strong>Browse characters starting with this letter...</strong>
       <ul class="feel-lucky-list">
         <li
-          v-for="(letter, idx) in iFeelLucky()"
+          v-for="(letter, idx) in iFeelLucky"
           :key="letter.id"
           class="feel-lucky-list__item"
         >
@@ -48,6 +48,15 @@ export default Vue.extend({
       findName: false,
     }
   },
+  computed: {
+    iFeelLucky(): [] {
+      // Load Chance
+      const Chance = require('chance')
+      const chance = new Chance()
+
+      return chance.unique(chance.letter, 4)
+    },
+  },
   methods: {
     getButtonClass(idx: number): Object {
       return {
@@ -67,13 +76,6 @@ export default Vue.extend({
           this.$refs.searchList.fetchNow(true)
         })
       }
-    },
-    iFeelLucky(): [] {
-      // Load Chance
-      const Chance = require('chance')
-      const chance = new Chance()
-
-      return chance.unique(chance.letter, 4)
     },
     handleLucky(query: string): void {
       // @ts-ignore
