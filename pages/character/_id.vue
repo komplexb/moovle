@@ -7,12 +7,18 @@
       <div class="content-block md:col-span-2">
         <img
           v-if="isImageReady"
-          loading="lazy"
           class="character-image"
+          :class="{
+            'character-image--unavailable': imageUnavailable,
+          }"
           :src="`${characterImagePath}/portrait_incredible.${character.thumbnail.extension}`"
-          :srcset="`${characterImagePath}/portrait_uncanny.${character.thumbnail.extension} 2x`"
+          :srcset="`${characterImagePath}/portrait_uncanny.${character.thumbnail.extension}
+        2x`"
           :alt="imageUnavailable ? 'Image Unavailable' : character.name"
         />
+        <h1 v-show="imageUnavailable" class="sm:hidden">
+          Character Image Unavailable
+        </h1>
         <Chart :stats="stats" />
         <div class="toast">
           <a :href="characterLinks.detail" target="_blank"
@@ -116,7 +122,7 @@ export default Vue.extend({
     },
     characterImagePath(): String {
       // @ts-ignore
-      return this.character?.thumbnail?.path.replace('http:', '')
+      return this.character?.thumbnail?.path.replace('http:', '') || ''
     },
     stats(): {} {
       // @ts-ignore
@@ -177,6 +183,10 @@ export default Vue.extend({
   @apply rounded-md;
 
   width: 100%;
+
+  &--unavailable {
+    @apply hidden sm:inline-block;
+  }
 }
 
 header {
