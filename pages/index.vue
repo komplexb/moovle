@@ -24,7 +24,7 @@
         >
           <button
             :class="['feel-lucky-list__button', getButtonClass(idx)]"
-            @click="searchQuery = letter"
+            @click="handleLucky(letter)"
           >
             <strong>{{ letter }}</strong>
           </button>
@@ -77,6 +77,12 @@ export default Vue.extend({
       const chance = new Chance()
 
       return chance.unique(chance.letter, 4)
+    },
+    handleLucky(query: string): void {
+      // @ts-ignore
+      this.searchQuery = query
+      // @ts-ignore
+      this.$refs.searchList.fetchNow(true)
     },
   },
 })
