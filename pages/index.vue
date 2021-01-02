@@ -11,7 +11,7 @@
         @keyup="handleEnter"
       />
     </section>
-    <section v-if="searchQuery.length === 0" class="feel-lucky">
+    <section class="feel-lucky">
       <strong>Browse characters starting with this letter...</strong>
       <ul class="feel-lucky-list">
         <li
@@ -29,7 +29,7 @@
       </ul>
     </section>
     <SearchList
-      v-else
+      v-if="searchQuery.length > 0"
       ref="searchList"
       :find="searchQuery"
       :query-type="findName"

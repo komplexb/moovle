@@ -22,9 +22,9 @@
           </nuxt-link>
         </li>
       </ul>
-      <div v-else class="flex justify-center">
+      <p v-else class="text-center">
         Sorry we haven't created your hero yet, please try again.
-      </div>
+      </p>
     </template>
   </section>
 </template>
@@ -100,7 +100,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 section {
-  @apply mt-4 md:mt-8;
+  @apply mt-8;
 }
 .search-list {
   @apply grid lg:grid-cols-2 2xl:grid-cols-3;
