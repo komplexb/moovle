@@ -132,6 +132,7 @@ export default Vue.extend({
     @apply object-cover h-32 w-24 rounded-sm transition-all;
   }
 
+  &:focus,
   &:hover {
     img {
       @apply shadow-md transform scale-150;
