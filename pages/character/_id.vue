@@ -82,7 +82,7 @@ export default Vue.extend({
   data() {
     return {
       // ToDo:
-      // more flexible passed as props:
+      // {id} more flexible passed as props:
       // https://router.vuejs.org/guide/essentials/passing-props.html#boolean-mode
       // but requires extending router config:
       // https://nuxtjs.org/docs/2.x/features/file-system-routing#extending-the-router
