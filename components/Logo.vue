@@ -1,6 +1,7 @@
 <template>
   <NuxtLink to="/">
     <img src="~/assets/images/moovle.png" alt="" class="Logo" />
+    <p class="slogan">search the marvel universe</p>
   </NuxtLink>
 </template>
 
@@ -10,6 +11,10 @@
 
   animation: 1s appear;
   margin: auto;
+}
+
+.slogan {
+  @apply text-center italic font-semibold text-primary-alt;
 }
 
 @keyframes appear {

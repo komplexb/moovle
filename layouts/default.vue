@@ -1,15 +1,17 @@
 <template>
   <div :class="`page-${$route.name}`">
-    <p v-if="isCharacterPage" class="text-center">
-      <nuxt-link
-        class="text-white align-middle p-4 inline-block"
-        to="/"
-        title="Back to Home"
-      >
-        <img src="~/assets/images/moovle-white.png" alt="" class="logo-small" />
-      </nuxt-link>
+    <p class="text-center">
+      <template v-if="isCharacterPage" >
+        <nuxt-link
+          class="text-white align-middle p-4 inline-block"
+          to="/"
+          title="Back to Home"
+        >
+          <img src="~/assets/images/moovle-white.png" alt="" class="logo-small" />
+        </nuxt-link>
+      </template>
+      <Logo v-else />
     </p>
-    <Logo v-else />
     <Nuxt keep-alive />
   </div>
 </template>
