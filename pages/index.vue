@@ -94,8 +94,9 @@ section {
   @apply my-2;
 }
 .search-box {
-  @apply h-24 border-primary rounded-lg focus:border-red-300 focus:ring-2 focus:ring-red-200 focus:ring-opacity-50 mt-4 md:mt-8;
-  @apply text-primary text-3xl sm:text-4xl md:text-7xl placeholder-primary w-full;
+  @apply h-24 mt-4 md:mt-8 w-full; // dimensions
+  @apply border-primary rounded-lg focus:border-red-300 focus:ring-2 focus:ring-red-200 focus:ring-opacity-50;
+  @apply text-primary text-3xl sm:text-4xl md:text-7xl placeholder-primary;
 
   text-align: center;
   border-width: 3px;

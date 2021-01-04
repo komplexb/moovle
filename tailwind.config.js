@@ -5,8 +5,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: 'var(--color-primary)',
-        'primary-alt': 'var(--color-primary-alt)',
+        primary: {
+          DEFAULT: 'var(--color-primary)',
+          500: 'var(--color-primary-500)',
+          alt: 'var(--color-primary-alt)'
+        },
         secondary: 'var(--color-secondary)',
         'secondary-alt': 'var(--color-secondary-alt)'
       },

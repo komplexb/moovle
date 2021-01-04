@@ -91,3 +91,6 @@ sw.*
 
 # Ignore Nuxt Readmes
 README.md
+
+# Cypress
+cypress/videos

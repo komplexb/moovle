@@ -3,6 +3,7 @@
     :class="[
       'card',
       {
+        'card--default': !isComic,
         'card--comic': isComic,
       },
     ]"
@@ -93,6 +94,44 @@ export default Vue.extend({
   @apply grid grid-cols-3 gap-2 mb-2 p-2 mx-auto; // position
   @apply w-full xs:w-4/5 md:w-96 lg:h-36; // size
   @apply border-secondary border-2 rounded-lg shadow-inner shadow-sm; // styles
+
+  &.card--default {
+    &:focus,
+    &:hover {
+      img {
+        @apply ring-primary ring-2 ring-offset-2;
+      }
+    }
+  }
+
+  &.card--comic {
+    @apply h-40 w-full; // size
+    img {
+      @apply object-cover h-32 w-24 rounded-sm transition-all;
+    }
+
+    &:focus,
+    &:hover {
+      img {
+        @apply shadow-md transform scale-150;
+      }
+    }
+  }
+}
+
+.card__image {
+  display: flex;
+  align-items: center;
+
+  img {
+    @apply object-cover h-20 w-20 sm:h-24 sm:w-24;
+    @apply ring-2 ring-primary-500 rounded-full transition;
+  }
+}
+.card__image--unavailable {
+  img {
+    @apply rounded-none object-left-bottom ring-white;
+  }
 }
 
 .card__details {
@@ -109,34 +148,6 @@ export default Vue.extend({
     @apply text-secondary-alt;
 
     word-break: break-word;
-  }
-}
-
-.card__image {
-  display: flex;
-  align-items: center;
-
-  img {
-    @apply object-cover h-20 w-20 sm:h-24 sm:w-24 rounded-full;
-  }
-}
-.card__image--unavailable {
-  img {
-    @apply rounded-none object-left-bottom;
-  }
-}
-
-.card--comic {
-  @apply h-40 w-full; // size
-  img {
-    @apply object-cover h-32 w-24 rounded-sm transition-all;
-  }
-
-  &:focus,
-  &:hover {
-    img {
-      @apply shadow-md transform scale-150;
-    }
   }
 }
 </style>
