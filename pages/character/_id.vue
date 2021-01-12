@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="pg-character container" :data-cy-bg-styled="bgStyled">
     <header>
       <h1>{{ character.name }}</h1>
     </header>
@@ -15,6 +15,7 @@
           :srcset="`${characterImagePath}/portrait_uncanny.${character.thumbnail.extension}
         2x`"
           :alt="imageUnavailable ? 'Image Unavailable' : character.name"
+          @load="setBackgroundColors"
         />
         <h1 v-show="imageUnavailable" class="sm:hidden mb-4 text-center">
           Character Image Unavailable
@@ -38,7 +39,6 @@
             comicCount: stats.values[0],
             character: character.name,
           }"
-          @comicsLoaded="setBackgroundColors"
         />
       </div>
     </main>
@@ -85,6 +85,7 @@ export default Vue.extend({
       // but requires extending router config:
       // https://nuxtjs.org/docs/2.x/features/file-system-routing#extending-the-router
       id: this.$route.params.id,
+      bgStyled: false,
       character: {},
     }
   },
@@ -152,6 +153,8 @@ export default Vue.extend({
               // @ts-ignore
               colors[colors.length - 1].color
             )
+
+            this.bgStyled = true
           }
         })
         .catch((e: Error) => {
