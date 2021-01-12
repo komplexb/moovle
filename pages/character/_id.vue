@@ -38,6 +38,7 @@
             comicCount: stats.values[0],
             character: character.name,
           }"
+          @comicsLoaded="setBackgroundColors"
         />
       </div>
     </main>
@@ -137,18 +138,7 @@ export default Vue.extend({
       }
     },
   },
-  mounted() {
-    this.$nextTick(function () {
-      this.setBackgroundColors()
-    })
-  },
-  updated() {
-    this.$nextTick(function () {
-      this.setBackgroundColors()
-    })
-  },
   methods: {
-    // not a perf friendly activity as it's lengthy and blocks the main thread
     async setBackgroundColors() {
       // @ts-ignore
       const path = `${this.characterImagePath}.${this.character?.thumbnail?.extension}`

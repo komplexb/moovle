@@ -61,6 +61,10 @@ export default Vue.extend({
     ).then((response) => response.json())
 
     this.comics = response.data.results
+
+    this.$nextTick(function () {
+      this.$emit('comicsLoaded')
+    })
   },
   data() {
     return {
