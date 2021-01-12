@@ -7,6 +7,7 @@
       <div class="content-block md:col-span-2">
         <img
           v-if="isImageReady"
+          ref="characterImg"
           class="character-image"
           :class="{
             'character-image--unavailable': imageUnavailable,
@@ -155,11 +156,22 @@ export default Vue.extend({
       if (val) this.setBackgroundColors()
     },
   },
+  activated() {
+    this.$nextTick(() => {
+      // toggle bg colors on cached pages
+      // will fail the first time
+      this.setBackgroundColors()
+    })
+  },
   methods: {
     async setBackgroundColors() {
       // @ts-ignore
-      const path = `${this.characterImagePath}.${this.character?.thumbnail?.extension}`
-      await analyze(path)
+      const path = this.$refs.characterImg?.currentSrc || ''
+
+      if (!path) return
+      await analyze(path, {
+        scale: 0.3,
+      })
         .then((colors: []) => {
           if (document) {
             document.documentElement.style.setProperty(

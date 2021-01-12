@@ -63,6 +63,7 @@ export default Vue.extend({
     this.comics = response.data.results
 
     this.$nextTick(function () {
+      // flag for toggling bg colors
       this.$emit('comicsLoaded')
     })
   },
