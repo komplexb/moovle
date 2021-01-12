@@ -56,9 +56,12 @@ export default Vue.extend({
     const params = `?orderBy=-onsaleDate&limit=${this.fetchLimit}` // show recent n comics in descending order
     const auth = `&apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
 
-    const response = await fetch(
-      `${this.$config.baseURL}/characters/${this.id}/comics${params}${auth}`
-    ).then((response) => response.json())
+    // @ts-ignore
+    const response = await this.$http
+      .$get(
+        `${this.$config.baseURL}/characters/${this.id}/comics${params}${auth}`
+      )
+      .then((response: Response) => response)
 
     this.comics = response.data.results
 

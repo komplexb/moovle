@@ -47,8 +47,7 @@ export default {
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
-    // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
+    '@nuxt/http',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa'
   ],
@@ -73,5 +72,9 @@ export default {
 
   generate: {
     fallback: true
+  },
+
+  http: {
+    clientTimeout: 5000
   }
 }

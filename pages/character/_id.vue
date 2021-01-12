@@ -1,49 +1,64 @@
 <template>
   <div class="pg-character container" :data-cy-bg-styled="bgStyled">
-    <header>
-      <h1>{{ character.name }}</h1>
-    </header>
-    <main class="grid md:grid-cols-7 gap-4 pb-6">
-      <div class="content-block md:col-span-2">
-        <img
-          v-if="isImageReady"
-          ref="characterImg"
-          class="character-image"
-          :class="{
-            'character-image--unavailable': imageUnavailable,
-          }"
-          :src="`${characterImagePath}/portrait_incredible.${character.thumbnail.extension}`"
-          :srcset="`${characterImagePath}/portrait_uncanny.${character.thumbnail.extension}
-        2x`"
-          :alt="imageUnavailable ? 'Image Unavailable' : character.name"
-          @load="isImageLoaded = true"
-        />
-        <h1 v-show="imageUnavailable" class="sm:hidden mb-4 text-center">
-          Character Image Unavailable
-        </h1>
-        <Chart :stats="stats" />
-        <div class="toast">
-          <a :href="characterLinks.detail" target="_blank"
-            >Learn more about <strong>{{ character.name }}</strong>
-          </a>
+    <div v-if="$fetchState.pending" class="flex justify-center">
+      <img src="~/assets/images/loader.gif" alt="Loading" />
+    </div>
+    <div v-else-if="$fetchState.error" class="flex justify-center">
+      <p v-if="$fetchState.error.message.includes('timed out')">
+        {{ $fetchState.error.message }}. The Marvel API may be down, please try
+        again later.
+      </p>
+      <p v-else>
+        There was an error loading this page. Please refresh to try again or
+        come back later.
+      </p>
+    </div>
+    <template v-else>
+      <header>
+        <h1>{{ character.name }}</h1>
+      </header>
+      <main class="grid md:grid-cols-7 gap-4 pb-6">
+        <div class="content-block md:col-span-2">
+          <img
+            v-if="isImageReady"
+            ref="characterImg"
+            class="character-image"
+            :class="{
+              'character-image--unavailable': imageUnavailable,
+            }"
+            :src="`${characterImagePath}/portrait_incredible.${character.thumbnail.extension}`"
+            :srcset="`${characterImagePath}/portrait_uncanny.${character.thumbnail.extension}
+          2x`"
+            :alt="imageUnavailable ? 'Image Unavailable' : character.name"
+            @load="isImageLoaded = true"
+          />
+          <h1 v-show="imageUnavailable" class="sm:hidden mb-4 text-center">
+            Character Image Unavailable
+          </h1>
+          <Chart :stats="stats" />
+          <div class="toast">
+            <a :href="characterLinks.detail" target="_blank"
+              >Learn more about <strong>{{ character.name }}</strong>
+            </a>
+          </div>
         </div>
-      </div>
-      <div class="content-block md:col-span-5">
-        <h1>Description</h1>
-        <p>
-          {{ description | stripHtml }}
-        </p>
-        <Comics
-          :id="id"
-          :context="{
-            comicLink: characterLinks.comic,
-            comicCount,
-            character: character.name,
-          }"
-          @comicsLoaded="isComicsLoaded = true"
-        />
-      </div>
-    </main>
+        <div class="content-block md:col-span-5">
+          <h1>Description</h1>
+          <p>
+            {{ description | stripHtml }}
+          </p>
+          <Comics
+            :id="id"
+            :context="{
+              comicLink: characterLinks.comic,
+              comicCount,
+              character: character.name,
+            }"
+            @comicsLoaded="isComicsLoaded = true"
+          />
+        </div>
+      </main>
+    </template>
   </div>
 </template>
 
@@ -73,9 +88,10 @@ export default Vue.extend({
     const hash = this.generateHash(timestamp)
     const params = `?apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
 
-    const response = await fetch(
-      `${this.$config.baseURL}/characters/${this.id}${params}`
-    ).then((response) => response.json())
+    // @ts-ignore
+    const response = await this.$http
+      .$get(`${this.$config.baseURL}/characters/${this.id}${params}`)
+      .then((response: Response) => response)
 
     this.character = response.data.results[0]
   },

@@ -1,13 +1,18 @@
 <template>
   <section>
-    <template v-if="$fetchState.pending">
-      <div class="flex justify-center">
-        <img src="~/assets/images/loader.gif" alt="Loading" />
-      </div>
-    </template>
-    <template v-else-if="$fetchState.error">
-      <p>Error while fetching results. Please refresh to try again.</p>
-    </template>
+    <div v-if="$fetchState.pending" class="flex justify-center">
+      <img src="~/assets/images/loader.gif" alt="Loading" />
+    </div>
+    <div v-else-if="$fetchState.error" class="flex justify-center">
+      <p v-if="$fetchState.error.message.includes('timed out')">
+        {{ $fetchState.error.message }}. The Marvel API may be down, please try
+        again later.
+      </p>
+      <p v-else>
+        There was an error loading this page. Please refresh to try again or
+        come back later.
+      </p>
+    </div>
     <template v-else>
       <ul v-if="results.length > 0" class="search-list">
         <li v-for="character in results" :key="character.id">
@@ -58,11 +63,12 @@ export default Vue.extend({
     }`
     const auth = `&apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
 
-    const response = await fetch(
-      `${this.$config.baseURL}/characters${params}${auth}`
-    ).then((response) => response.json())
+    // @ts-ignore
+    const response = await this.$http
+      .$get(`${this.$config.baseURL}/characters${params}${auth}`)
+      .then((response: Response) => response)
 
-    this.results = response.data?.results || []
+    this.results = response?.data?.results || []
   },
   data() {
     return {
