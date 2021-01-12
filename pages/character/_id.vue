@@ -15,7 +15,7 @@
           :srcset="`${characterImagePath}/portrait_uncanny.${character.thumbnail.extension}
         2x`"
           :alt="imageUnavailable ? 'Image Unavailable' : character.name"
-          @load="setBackgroundColors"
+          @load="isImageLoaded = true"
         />
         <h1 v-show="imageUnavailable" class="sm:hidden mb-4 text-center">
           Character Image Unavailable
@@ -36,9 +36,10 @@
           :id="id"
           :context="{
             comicLink: characterLinks.comic,
-            comicCount: stats.values[0],
+            comicCount,
             character: character.name,
           }"
+          @comicsLoaded="isComicsLoaded = true"
         />
       </div>
     </main>
@@ -87,9 +88,25 @@ export default Vue.extend({
       id: this.$route.params.id,
       bgStyled: false,
       character: {},
+      isImageLoaded: false,
+      isComicsLoaded: false,
     }
   },
   computed: {
+    // only toggle background colors after the profile image and comics are loaded
+    canToggleBackground(): Boolean {
+      return (
+        this.isImageLoaded && (this.isComicsLoaded || this.comicCount === 0)
+      )
+    },
+    comicCount(): Number {
+      // @ts-ignore
+      return this.stats.values[0]
+    },
+    characterImagePath(): String {
+      // @ts-ignore
+      return this.character?.thumbnail?.path.replace('http:', '') || ''
+    },
     characterLinks(): Object {
       const comic =
         // @ts-ignore
@@ -119,10 +136,7 @@ export default Vue.extend({
       // @ts-ignore
       return this.character?.thumbnail
     },
-    characterImagePath(): String {
-      // @ts-ignore
-      return this.character?.thumbnail?.path.replace('http:', '') || ''
-    },
+
     stats(): {} {
       // @ts-ignore
       const { comics, series, stories } = this.character
@@ -134,6 +148,11 @@ export default Vue.extend({
           stories?.available || 0,
         ],
       }
+    },
+  },
+  watch: {
+    canToggleBackground(val: Boolean): void {
+      if (val) this.setBackgroundColors()
     },
   },
   methods: {
