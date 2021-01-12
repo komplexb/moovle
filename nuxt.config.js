@@ -69,5 +69,9 @@ export default {
   privateRuntimeConfig: {
     marvelPuk: process.env.MARVEL_PUK,
     marvelPrk: process.env.MARVEL_PRK
+  },
+
+  generate: {
+    fallback: true
   }
 }
