@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="pg-character container" :data-cy-bg-styled="bgStyled">
     <header>
       <h1>{{ character.name }}</h1>
     </header>
@@ -7,6 +7,7 @@
       <div class="content-block md:col-span-2">
         <img
           v-if="isImageReady"
+          ref="characterImg"
           class="character-image"
           :class="{
             'character-image--unavailable': imageUnavailable,
@@ -15,6 +16,7 @@
           :srcset="`${characterImagePath}/portrait_uncanny.${character.thumbnail.extension}
         2x`"
           :alt="imageUnavailable ? 'Image Unavailable' : character.name"
+          @load="isImageLoaded = true"
         />
         <h1 v-show="imageUnavailable" class="sm:hidden mb-4 text-center">
           Character Image Unavailable
@@ -35,9 +37,10 @@
           :id="id"
           :context="{
             comicLink: characterLinks.comic,
-            comicCount: stats.values[0],
+            comicCount,
             character: character.name,
           }"
+          @comicsLoaded="isComicsLoaded = true"
         />
       </div>
     </main>
@@ -48,9 +51,6 @@
 import Vue from 'vue'
 // @ts-ignore
 import analyze from 'rgbaster'
-// @ts-ignore
-import Bars from 'vuebars'
-Vue.use(Bars)
 
 export default Vue.extend({
   name: 'Character',
@@ -87,10 +87,27 @@ export default Vue.extend({
       // but requires extending router config:
       // https://nuxtjs.org/docs/2.x/features/file-system-routing#extending-the-router
       id: this.$route.params.id,
+      bgStyled: false,
       character: {},
+      isImageLoaded: false,
+      isComicsLoaded: false,
     }
   },
   computed: {
+    // only toggle background colors after the profile image and comics are loaded
+    canToggleBackground(): Boolean {
+      return (
+        this.isImageLoaded && (this.isComicsLoaded || this.comicCount === 0)
+      )
+    },
+    comicCount(): Number {
+      // @ts-ignore
+      return this.stats.values[0]
+    },
+    characterImagePath(): String {
+      // @ts-ignore
+      return this.character?.thumbnail?.path.replace('http:', '') || ''
+    },
     characterLinks(): Object {
       const comic =
         // @ts-ignore
@@ -120,10 +137,7 @@ export default Vue.extend({
       // @ts-ignore
       return this.character?.thumbnail
     },
-    characterImagePath(): String {
-      // @ts-ignore
-      return this.character?.thumbnail?.path.replace('http:', '') || ''
-    },
+
     stats(): {} {
       // @ts-ignore
       const { comics, series, stories } = this.character
@@ -137,22 +151,27 @@ export default Vue.extend({
       }
     },
   },
-  mounted() {
-    this.$nextTick(function () {
-      this.setBackgroundColors()
-    })
+  watch: {
+    canToggleBackground(val: Boolean): void {
+      if (val) this.setBackgroundColors()
+    },
   },
-  updated() {
-    this.$nextTick(function () {
+  activated() {
+    this.$nextTick(() => {
+      // toggle bg colors on cached pages
+      // will fail the first time
       this.setBackgroundColors()
     })
   },
   methods: {
-    // not a perf friendly activity as it's lengthy and blocks the main thread
     async setBackgroundColors() {
       // @ts-ignore
-      const path = `${this.characterImagePath}.${this.character?.thumbnail?.extension}`
-      await analyze(path)
+      const path = this.$refs.characterImg?.currentSrc || ''
+
+      if (!path) return
+      await analyze(path, {
+        scale: 0.3,
+      })
         .then((colors: []) => {
           if (document) {
             document.documentElement.style.setProperty(
@@ -165,6 +184,8 @@ export default Vue.extend({
               // @ts-ignore
               colors[colors.length - 1].color
             )
+
+            this.bgStyled = true
           }
         })
         .catch((e: Error) => {

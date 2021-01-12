@@ -61,6 +61,11 @@ export default Vue.extend({
     ).then((response) => response.json())
 
     this.comics = response.data.results
+
+    this.$nextTick(function () {
+      // flag for toggling bg colors
+      this.$emit('comicsLoaded')
+    })
   },
   data() {
     return {

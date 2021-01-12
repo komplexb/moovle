@@ -27,14 +27,13 @@ describe('Happy Path', () => {
   it('Filter (?nameStartsWith=thor)', () => {
     cy.visit('/')
     cy.get('.search-box')
-      .type('thor', { delay: 300 })
+      .type('thor', { delay: 1000 })
       .get('.search-list li a')
-      .should($a => {
-        expect($a.length).to.be.greaterThan(1)
-      })
+      .its('length')
+      .should('be.gt', 1)
   })
 
-  it('Has Comic Cards', () => {
+  it('Character Page - Has Comic Cards', () => {
     cy.visit('/')
     cy.get('.search-box')
       .type('thor', { delay: 1000 })
@@ -46,5 +45,10 @@ describe('Happy Path', () => {
       .find('.comics li')
       .wait(1000)
       .should('have.length', 6)
+  })
+
+  it.skip('Character Page - Background Styled', () => {
+    cy.visit('/character/1009664')
+    cy.get('.pg-character').should('have.attr', 'data-cy-bg-styled', 'true')
   })
 })
