@@ -46,4 +46,9 @@ describe('Happy Path', () => {
       .wait(1000)
       .should('have.length', 6)
   })
+
+  it.skip('Character Page - Background Styled', () => {
+    cy.visit('/character/1009664')
+    cy.get('.pg-character').should('have.attr', 'data-cy-bg-styled', 'true')
+  })
 })
