@@ -69,10 +69,5 @@ export default {
   privateRuntimeConfig: {
     marvelPuk: process.env.MARVEL_PUK,
     marvelPrk: process.env.MARVEL_PRK
-  },
-
-  generate: {
-    fallback: true,
-    routes: ['/character/1009664']
   }
 }

@@ -10,3 +10,4 @@ TERM = "xterm"
 package = "netlify-plugin-cypress"
  [plugins.inputs]
   record = true
+  spec = "cypress/e2e/Index.spec.js"
