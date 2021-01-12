@@ -49,9 +49,6 @@
 import Vue from 'vue'
 // @ts-ignore
 import analyze from 'rgbaster'
-// @ts-ignore
-import Bars from 'vuebars'
-Vue.use(Bars)
 
 export default Vue.extend({
   name: 'Character',

@@ -26,6 +26,10 @@
 <script lang="ts">
 import Vue from 'vue'
 
+// @ts-ignore
+import Bars from 'vuebars'
+Vue.use(Bars)
+
 export default Vue.extend({
   name: 'Charts',
   props: {
