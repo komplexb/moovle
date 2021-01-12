@@ -48,7 +48,7 @@ describe('Happy Path', () => {
   })
 
   it('Character Page - Background Styled', () => {
-    cy.visit('/character/1009664')
+    cy.visit('/character/1009664', { retryOnStatusCodeFailure: true })
     cy.get('.pg-character').should('have.attr', 'data-cy-bg-styled', 'true')
   })
 })
