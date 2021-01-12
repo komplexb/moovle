@@ -72,6 +72,7 @@ export default {
   },
 
   generate: {
-    fallback: true
+    fallback: true,
+    routes: ['/character/1009664']
   }
 }
