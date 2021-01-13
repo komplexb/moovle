@@ -1,9 +1,6 @@
 <template>
   <div class="pg-character container" :data-cy-bg-styled="bgStyled">
-    <div v-if="$fetchState.pending" class="flex justify-center">
-      <img src="~/assets/images/loader.gif" alt="Loading" />
-    </div>
-    <div v-else-if="$fetchState.error" class="flex justify-center">
+    <div v-if="$fetchState.error" class="flex justify-center">
       <p v-if="$fetchState.error.message.includes('timed out')">
         {{ $fetchState.error.message }}. The Marvel API may be down, please try
         again later.
@@ -104,7 +101,9 @@ export default Vue.extend({
       // https://nuxtjs.org/docs/2.x/features/file-system-routing#extending-the-router
       id: this.$route.params.id,
       bgStyled: false,
-      character: {},
+      character: {
+        name: '',
+      },
       isImageLoaded: false,
       isComicsLoaded: false,
     }
@@ -200,7 +199,6 @@ export default Vue.extend({
               // @ts-ignore
               colors[colors.length - 1].color
             )
-
             this.bgStyled = true
           }
         })
@@ -212,6 +210,12 @@ export default Vue.extend({
       // strip protocol to force https on prod
       return path.replace('http:', '')
     },
+  },
+  head() {
+    return {
+      // @ts-ignore
+      title: `${this.character?.name} | Moovle` || 'Moovle',
+    }
   },
 })
 </script>

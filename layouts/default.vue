@@ -1,18 +1,27 @@
 <template>
-  <div :class="`page-${$route.name}`">
+  <div class="flex flex-col min-h-screen" :class="`page-${$route.name}`">
     <p class="text-center">
-      <template v-if="isCharacterPage" >
+      <template v-if="isCharacterPage">
         <nuxt-link
           class="text-white align-middle p-4 inline-block"
           to="/"
           title="Back to Home"
         >
-          <img src="~/assets/images/moovle-white.png" alt="" class="logo-small" />
+          <img
+            src="~/assets/images/moovle-white.png"
+            alt=""
+            class="logo-small"
+          />
         </nuxt-link>
       </template>
       <Logo v-else />
     </p>
     <Nuxt keep-alive />
+    <footer class="mt-auto p-4">
+      <div class="text-center text-primary font-semibold">
+        <a href="https://byronbuckley.com" target="_blank">Byron Buckley ©</a>
+      </div>
+    </footer>
   </div>
 </template>
 

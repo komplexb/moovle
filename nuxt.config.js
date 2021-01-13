@@ -4,11 +4,16 @@ export default {
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: 'moovle',
+    title: 'Moovle | search the marvel universe',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' }
+      {
+        hid: 'description',
+        name: 'description',
+        content:
+          'Learn about Marvel characters by searching and exploring with Moovle.'
+      }
     ],
     link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }]
   },
@@ -20,7 +25,8 @@ export default {
   plugins: [
     '~/plugins/filter/stripHtml.js',
     '~/plugins/filter/truncate.js',
-    '~/plugins/mixin/generateHash.js'
+    '~/plugins/mixin/generateHash.js',
+    '~/plugins/vue-observe-visibility.client.js'
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

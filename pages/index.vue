@@ -32,7 +32,7 @@
       v-if="searchQuery.length > 0"
       ref="searchList"
       :find="searchQuery"
-      :query-type="findName"
+      :find-name="findName"
     />
   </div>
 </template>
@@ -80,6 +80,7 @@ export default Vue.extend({
     handleLucky(query: string): void {
       // @ts-ignore
       this.searchQuery = query
+      this.findName = false
       this.$nextTick(() => {
         // @ts-ignore
         this.$refs.searchList.fetchNow(true)
