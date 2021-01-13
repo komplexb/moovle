@@ -43,7 +43,7 @@ describe('Happy Path', () => {
       .click()
       .get('.page-character-id')
       .find('.comics li')
-      .wait(1000)
+      .wait(6000)
       .should('have.length', 6)
   })
 
