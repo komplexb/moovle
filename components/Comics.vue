@@ -25,7 +25,7 @@
           </a>
         </div>
       </template>
-      <p v-else>
+      <p v-else class="text-primary-alt">
         <strong>{{ context.character }}</strong> doesn't have any comics.
       </p>
     </template>

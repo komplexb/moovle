@@ -1,6 +1,9 @@
 <template>
   <section>
-    <div v-if="$fetchState.pending" class="flex justify-center">
+    <div
+      v-if="$fetchState.pending && pageCount === 0"
+      class="flex justify-center"
+    >
       <img src="~/assets/images/loader.gif" alt="Loading" />
     </div>
     <div v-else-if="$fetchState.error" class="flex justify-center">
@@ -15,7 +18,13 @@
     </div>
     <template v-else>
       <ul v-if="results.length > 0" class="search-list">
-        <li v-for="character in results" :key="character.id">
+        <li
+          v-for="(character, i) in results"
+          :key="character.id"
+          v-observe-visibility="
+            i === results.length - 1 ? lazyLoadResults : false
+          "
+        >
           <nuxt-link
             :to="{
               path: `/character/${character.id}`,
@@ -30,6 +39,12 @@
       <p v-else class="text-center">
         Sorry we haven't created your hero yet, please try again.
       </p>
+      <div
+        v-if="$fetchState.pending && pageCount > 0"
+        class="flex justify-center"
+      >
+        <img src="~/assets/images/loader.gif" alt="Loading" />
+      </div>
     </template>
   </section>
 </template>
@@ -49,7 +64,7 @@ export default Vue.extend({
       default: '',
       required: true,
     },
-    queryType: {
+    findName: {
       type: Boolean,
       default: false,
     },
@@ -58,9 +73,12 @@ export default Vue.extend({
     const timestamp = Date.now()
     // @ts-ignore
     const hash = this.generateHash(timestamp)
-    const params = `?${this.queryType ? 'name' : 'nameStartsWith'}=${
-      this.cleanQuery
-    }`
+    const cleanQuery = sanitizeHtml(this.find.trim(), {
+      allowedTags: [],
+    })
+    const params = `?${
+      this.findName ? 'name' : 'nameStartsWith'
+    }=${cleanQuery}&offset=${this.pageCount}`
     const auth = `&apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
 
     // @ts-ignore
@@ -68,36 +86,54 @@ export default Vue.extend({
       .$get(`${this.$config.baseURL}/characters${params}${auth}`)
       .then((response: Response) => response)
 
-    this.results = response?.data?.results || []
+    const { results = [], total = 0, count = 0 } = response?.data
+
+    this.pageCount += count
+    this.pageTotal = total
+    this.results = this.results.concat(results)
   },
   data() {
     return {
-      cleanQuery: this.find,
+      currentPage: 1,
       debounceTimeoutId,
       results: [],
+      pageCount: 0,
+      pageTotal: 0,
     }
   },
   watch: {
     find(val, oldVal): void {
       if (val.length === 0) return
 
-      if (val !== oldVal) this.fetchNow()
+      if (val !== oldVal) {
+        this.resetSearchResults()
+
+        this.fetchNow()
+      }
     },
   },
   methods: {
+    resetSearchResults(): void {
+      this.results = []
+      this.pageCount = 0
+      this.pageTotal = 0
+    },
     fetchNow(yes = false): void {
-      this.cleanQuery = sanitizeHtml(this.find.trim(), {
-        allowedTags: [],
-      })
-
       // cancel queued fetches
       clearTimeout(this.debounceTimeoutId)
       if (yes) {
+        this.resetSearchResults()
         this.$fetch()
       } else {
         this.debounceTimeoutId = setTimeout(() => {
           this.$fetch()
         }, 300)
+      }
+    },
+    lazyLoadResults(isVisible: Boolean) {
+      const theresMore = this.pageCount < this.pageTotal
+      if (isVisible && theresMore) {
+        this.fetchNow()
       }
     },
   },

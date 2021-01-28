@@ -4,6 +4,15 @@ describe('Happy Path', () => {
     cy.contains('.slogan', 'search the marvel universe')
   })
 
+  it('Find (?name=thor)', () => {
+    cy.visit('/')
+    cy.get('.search-box')
+      .type('thor', { delay: 1000 })
+      .type('{enter}')
+      .get('.search-list li a')
+      .should('have.length', 1)
+  })
+
   it('I feel lucky', () => {
     cy.visit('/')
     cy.get('.feel-lucky-list__button')
@@ -13,15 +22,6 @@ describe('Happy Path', () => {
       .first()
       .click()
       .get('header > h1')
-  })
-
-  it('Find (?name=thor)', () => {
-    cy.visit('/')
-    cy.get('.search-box')
-      .type('thor', { delay: 1000 })
-      .type('{enter}')
-      .get('.search-list li a')
-      .should('have.length', 1)
   })
 
   it('Filter (?nameStartsWith=thor)', () => {
@@ -45,6 +45,20 @@ describe('Happy Path', () => {
       .find('.comics li')
       .wait(6000)
       .should('have.length', 6)
+  })
+
+  it.skip('Paging', () => {
+    cy.visit('/')
+    cy.get('.search-box')
+      .type('t', { delay: 1000 })
+      .get('.search-list li a')
+      .its('length')
+      .should('be.eq', 20)
+    cy.scrollTo('bottom')
+      .wait(4000)
+      .get('.search-list li a')
+      .its('length')
+      .should('be.gt', 20)
   })
 
   it.skip('Character Page - Background Styled', () => {

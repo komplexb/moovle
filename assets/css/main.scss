@@ -54,3 +54,7 @@ strong {
     @apply text-primary;
   }
 }
+
+.container {
+  min-height: initial !important; // don't want 100vh
+}
