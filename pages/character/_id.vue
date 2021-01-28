@@ -212,9 +212,17 @@ export default Vue.extend({
     },
   },
   head() {
+    // @ts-ignore
+    const title = `${this.character?.name} | Moovle` || 'Moovle'
     return {
-      // @ts-ignore
-      title: `${this.character?.name} | Moovle` || 'Moovle',
+      title,
+      meta: [
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: title,
+        },
+      ],
     }
   },
 })

@@ -9,8 +9,19 @@ export default {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
+        hid: 'og:title',
+        name: 'og:title',
+        content: 'Moovle | search the marvel universe'
+      },
+      {
         hid: 'description',
         name: 'description',
+        content:
+          'Learn about Marvel characters by searching and exploring with Moovle.'
+      },
+      {
+        hid: 'og:description',
+        name: 'og:description',
         content:
           'Learn about Marvel characters by searching and exploring with Moovle.'
       }
