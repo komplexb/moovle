@@ -57,7 +57,8 @@ export default {
             wght: [900]
           }
         },
-        display: 'swap'
+        display: 'swap',
+        preload: false
       }
     ]
   ],

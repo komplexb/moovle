@@ -33,3 +33,5 @@ $ npm run dev:e2e
 # run e2e tests
 $ npm run test:e2e
 ```
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/bd6b82d3-d88b-4a62-9c3b-048c5af9ac2e/deploy-status)](https://app.netlify.com/sites/moovle/deploys)
