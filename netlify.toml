@@ -6,10 +6,14 @@ CYPRESS_CACHE_FOLDER = "./node_modules/CypressBinary"
 TERM = "xterm"
 
 [[plugins]]
-# local Cypress plugin will test our site after it is built
+# skip local test
 package = "netlify-plugin-cypress"
- [plugins.inputs]
+[plugins.inputs]
+  skip = true
+# Cypress plugin will test site at deployed url
+[plugins.inputs.onSuccess]
   record = true
+  enable = true
 
 [[headers]]
   for = "/*"

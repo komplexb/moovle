@@ -1,3 +1,5 @@
+import redirects from './utils/redirects.js'
+
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
@@ -67,8 +69,15 @@ export default {
   modules: [
     '@nuxt/http',
     // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    // https://github.com/nuxt-community/redirect-module
+    '@nuxtjs/redirect-module'
   ],
+
+  redirect: {
+    rules: redirects,
+    statusCode: 301
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},
