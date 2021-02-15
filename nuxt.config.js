@@ -1,8 +1,9 @@
+import redirectSSL from 'redirect-ssl'
 import redirects from './utils/redirects.js'
 
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
-  target: 'static',
+  target: 'server',
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
@@ -13,22 +14,22 @@ export default {
       {
         hid: 'og:title',
         name: 'og:title',
-        content: 'Moovle | search the marvel universe'
+        content: 'Moovle | search the marvel universe',
       },
       {
         hid: 'description',
         name: 'description',
         content:
-          'Learn about Marvel characters by searching and exploring with Moovle.'
+          'Learn about Marvel characters by searching and exploring with Moovle.',
       },
       {
         hid: 'og:description',
         name: 'og:description',
         content:
-          'Learn about Marvel characters by searching and exploring with Moovle.'
-      }
+          'Learn about Marvel characters by searching and exploring with Moovle.',
+      },
     ],
-    link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }]
+    link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
@@ -39,7 +40,7 @@ export default {
     '~/plugins/filter/stripHtml.js',
     '~/plugins/filter/truncate.js',
     '~/plugins/mixin/generateHash.js',
-    '~/plugins/vue-observe-visibility.client.js'
+    '~/plugins/vue-observe-visibility.client.js',
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -56,13 +57,14 @@ export default {
       {
         families: {
           'Titillium+Web': {
-            wght: [900]
-          }
+            wght: [900],
+          },
         },
         display: 'swap',
-        preload: false
-      }
-    ]
+        preload: false,
+        useStylesheet: true,
+      },
+    ],
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
@@ -71,34 +73,68 @@ export default {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     // https://github.com/nuxt-community/redirect-module
-    '@nuxtjs/redirect-module'
+    '@nuxtjs/redirect-module',
+    // https://www.npmjs.com/package/nuxt-helmet
+    'nuxt-helmet',
   ],
 
+  // configure redirect-module
   redirect: {
     rules: redirects,
-    statusCode: 301
+    statusCode: 301,
+  },
+
+  helmet: {
+    xssFilter: false,
+  },
+
+  // https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-render#csp
+  render: {
+    csp: {
+      hashAlgorithm: 'sha256',
+      policies: {
+        'default-src': ["'self'"],
+        'img-src': ['https:'],
+        'style-src': ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
+        'font-src': ["'self'", "'unsafe-inline'", 'fonts.gstatic.com'],
+      },
+    },
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},
 
+  env: {},
+
   publicRuntimeConfig: {
-    baseURL: 'https://gateway.marvel.com/v1/public',
-    marvelPuk: process.env.MARVEL_PUK,
-    marvelPrk: process.env.MARVEL_PRK,
-    isDev: process.env.NODE_ENV !== 'production'
+    baseURL: process.env.MARVEL_API_URL,
+    isDev: process.env.NODE_ENV !== 'production',
   },
 
   privateRuntimeConfig: {
     marvelPuk: process.env.MARVEL_PUK,
-    marvelPrk: process.env.MARVEL_PRK
+    marvelPrk: process.env.MARVEL_PRK,
   },
 
   generate: {
-    fallback: true
+    fallback: true,
   },
 
   http: {
-    clientTimeout: 5000
-  }
+    clientTimeout: 5000,
+    https: process.env.NODE_ENV == 'production',
+    baseURL: 'http://localhost:3000', // set API_URL to prod url on server
+  },
+
+  serverMiddleware: [
+    {
+      path: '/api',
+      handler: '~/api',
+    },
+    redirectSSL.create({
+      enabled: process.env.NODE_ENV === 'production',
+    }),
+  ],
+
+  watch: ['~/api/**/*.js', '**/*.ts'],
 }

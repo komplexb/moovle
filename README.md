@@ -34,4 +34,17 @@ $ npm run dev:e2e
 $ npm run test:e2e
 ```
 
+## Deploy on Heroku
+- Follow this: https://nuxtjs.org/docs/2.x/deployment/heroku-deployment
+- Update `Procfile` to `web: nuxt-ts start`
+- Use `heroku config:set VARIABLE=value` or the Heroku Dashboard to add the following variables:
+```
+# https://http.nuxtjs.org/options#browserbaseurl
+API_URL=https://moovle-search.herokuapp.com
+MARVEL_API_URL=https://gateway.marvel.com/v1/public
+MARVEL_PRK
+MARVEL_PUK
+
+```
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/bd6b82d3-d88b-4a62-9c3b-048c5af9ac2e/deploy-status)](https://app.netlify.com/sites/moovle/deploys)

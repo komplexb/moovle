@@ -1,0 +1,12 @@
+"headers": {
+  "/**": {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "X-XSS-Protection": "1; mode=block",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Strict-Transport-Security": "max-age=2592000",
+    "Feature-Policy": "geolocation 'none'; midi 'none'; notifications 'none'; push 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; vibrate 'none'; fullscreen 'self'; payment 'none'",
+    "Content-Security-Policy": "default-src https: 'unsafe-inline'; img-src data: https:; font-src 'unsafe-inline' fonts.gstatic.com; style-src 'unsafe-inline' fonts.googleapis.com"
+  },
+  "https_only": true
+}

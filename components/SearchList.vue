@@ -70,20 +70,16 @@ export default Vue.extend({
     },
   },
   async fetch() {
-    const timestamp = Date.now()
-    // @ts-ignore
-    const hash = this.generateHash(timestamp)
     const cleanQuery = sanitizeHtml(this.find.trim(), {
       allowedTags: [],
     })
     const params = `?${
       this.findName ? 'name' : 'nameStartsWith'
     }=${cleanQuery}&offset=${this.pageCount}`
-    const auth = `&apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
 
     // @ts-ignore
     const response = await this.$http
-      .$get(`${this.$config.baseURL}/characters${params}${auth}`)
+      .$get(`/api/search${params}`)
       .then((response: Response) => response)
 
     const { results = [], total = 0, count = 0 } = response?.data

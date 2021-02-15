@@ -80,14 +80,9 @@ export default Vue.extend({
     },
   },
   async fetch() {
-    const timestamp = Date.now()
-    // @ts-ignore
-    const hash = this.generateHash(timestamp)
-    const params = `?apikey=${this.$config.marvelPuk}&ts=${timestamp}&hash=${hash}`
-
     // @ts-ignore
     const response = await this.$http
-      .$get(`${this.$config.baseURL}/characters/${this.id}${params}`)
+      .$get(`/api/character/${this.id}`)
       .then((response: Response) => response)
 
     this.character = response.data.results[0]
