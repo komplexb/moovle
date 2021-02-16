@@ -5,7 +5,7 @@
 A web app for exploring Marvel Comic characters.
 
 ## Try it
-Visit https://moovle.netlify.app  
+Visit https://moovle-search.herokuapp.com  
 Start entering a character name and the site app will provide a filtered list of upto twenty Marvel characters **starting with** your string.
 
 Press `ENTER` after your text and the app will provide a character with that **exact name** if one exists.
@@ -44,7 +44,4 @@ API_URL=https://moovle-search.herokuapp.com
 MARVEL_API_URL=https://gateway.marvel.com/v1/public
 MARVEL_PRK
 MARVEL_PUK
-
 ```
-
-[![Netlify Status](https://api.netlify.com/api/v1/badges/bd6b82d3-d88b-4a62-9c3b-048c5af9ac2e/deploy-status)](https://app.netlify.com/sites/moovle/deploys)
