@@ -2,7 +2,7 @@ name: Cypress.io
 on: [push]
 jobs: 
   cypress-run:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-16.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -10,9 +10,10 @@ jobs:
         uses: cypress-io/github-action@v2.8.2
         with:
           record: true
-          start: npm run start
-          wait-on: http://localhost:3000/
           config-file: cypress.json
+          start: npm start
+          wait-on: 'http://localhost:3000/'
+          wait-on-timeout: 240
         env: 
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
