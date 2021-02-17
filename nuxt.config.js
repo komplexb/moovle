@@ -76,7 +76,44 @@ export default {
     '@nuxtjs/redirect-module',
     // https://www.npmjs.com/package/nuxt-helmet
     'nuxt-helmet',
+    // https://auth.nuxtjs.org/
+    '@nuxtjs/auth',
+    '@nuxtjs/axios', // auth needs this
+    // https://github.com/nuxt-community/community-modules/tree/master/packages/toast
+    // https://github.com/shakee93/vue-toasted
+    '@nuxtjs/toast',
   ],
+
+  toast: {
+    singleton: true,
+    duration: 3000,
+  },
+
+  auth: {
+    localStorage: true,
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/api/auth/login',
+            method: 'post',
+            propertyName: 'token',
+          },
+          logout: false,
+          user: {
+            url: '/api/auth/user',
+            method: 'get',
+            propertyName: false,
+          },
+        },
+      },
+    },
+    redirect: {
+      logout: '/',
+      callback: '/login',
+      home: '/',
+    },
+  },
 
   // configure redirect-module
   redirect: {
