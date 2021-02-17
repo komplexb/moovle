@@ -22,6 +22,7 @@ export default {
           },
         })
         this.$toast.success(response.data.message)
+        await this.$router.push('/admin')
       } catch (error) {
         this.$toast.error(error.response.data.message)
       }

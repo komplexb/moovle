@@ -1,7 +1,10 @@
 // refer: https://github.com/nuxt-community/express-template
 const express = require('express')
+const app = express()
 const rateLimit = require('express-rate-limit')
 const bodyParser = require('body-parser')
+
+const passport = require('passport')
 
 // use limiter on a per route basis
 const limiter = rateLimit({
@@ -9,7 +12,7 @@ const limiter = rateLimit({
   max: 100, // limit each IP to 100 requests per windowMs
 })
 
-const app = express()
+app.use(passport.initialize())
 
 const marvel = require('./routes/marvel')
 const auth = require('./routes/authentication')
