@@ -2,7 +2,6 @@
 const express = require('express')
 const app = express()
 const rateLimit = require('express-rate-limit')
-const bodyParser = require('body-parser')
 
 const passport = require('passport')
 
@@ -17,8 +16,8 @@ app.use(passport.initialize())
 const marvel = require('./routes/marvel')
 const auth = require('./routes/authentication')
 
-app.use(bodyParser.json()) // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: true })) // support encoded bodies
+app.use(express.json()) // support json encoded bodies
+app.use(express.urlencoded({ extended: true })) // support encoded bodies
 
 app.use(marvel('/search'))
 app.use(marvel('/character/:id', [limiter]))
