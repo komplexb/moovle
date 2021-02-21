@@ -36,7 +36,10 @@
           </nuxt-link>
         </li>
       </ul>
-      <p v-else class="text-center">
+      <p
+        v-else-if="results.length === 0 && $fetchState.pending"
+        class="text-center"
+      >
         Sorry we haven't created your hero yet, please try again.
       </p>
       <div
@@ -79,7 +82,7 @@ export default Vue.extend({
 
     // @ts-ignore
     const response = await this.$http
-      .$get(`/api/search${params}`)
+      .$get(`/api/marvel/search${params}`)
       .then((response: Response) => response)
 
     const { results = [], total = 0, count = 0 } = response?.data

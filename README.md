@@ -45,3 +45,6 @@ MARVEL_API_URL=https://gateway.marvel.com/v1/public
 MARVEL_PRK
 MARVEL_PUK
 ```
+
+## Links
+Marvel API Docs: https://developer.marvel.com/docs

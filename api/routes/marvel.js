@@ -2,41 +2,82 @@ import { generateHash } from '../../utils/generateHash'
 const express = require('express')
 const axios = require('axios')
 
+const apicache = require('apicache')
+const rateLimit = require('express-rate-limit')
+const cache = apicache.middleware // cache globally
+
+// use limiter on a per route basis
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+})
+
 const router = express.Router()
 
-function configureRoute(route, middleware = []) {
-  const baseURL = `${process.env.MARVEL_API_URL}/characters`
+// GET /v1/public/characters Fetches lists of characters.
+const baseURL = `${process.env.MARVEL_API_URL}/characters`
 
-  return router.use(route, middleware, async (req, res, next) => {
-    const timestamp = Date.now()
-    const hash = generateHash(timestamp)
+router.use(cache('1 day'))
+router.use(limiter)
 
-    try {
-      const params = new URLSearchParams({
-        apikey: process.env.MARVEL_PUK,
-        ts: timestamp,
-        hash,
-        ...req.query,
-      })
+/**
+ * only accept {name || nameStartsWith } for search
+ * {name} Return only characters matching the specified full character name (e.g. Spider-Man).
+ * {nameStartsWith} Return characters with names that begin with the specified string (e.g. Sp).
+ */
+router.get('/search', function (req, res, next) {
+  if (req.query?.name || req.query?.nameStartsWith) {
+    next()
+  } else {
+    throw new Error('Invalid search, please try again.')
+  }
+})
 
-      // character || comics request
-      let url = ''
-      if (route.includes('character')) {
-        url = `/${req.params.id}`
-      } else if (route.includes('comics')) {
-        url = `/${req.params.id}/comics`
-      }
+// GET {baseURL}/{characterId} Fetches a single character by id.
+router.get('/character/:id', function (req, res, next) {
+  req.marvelPath = `/${req.params.id}`
+  next()
+})
 
-      const { request, data } = await axios.get(`${baseURL}${url}`, {
+// GET {baseURL}/{characterId}/comics
+// Fetches lists of comics filtered by a character id.
+router.get('/comics/:id', function (req, res, next) {
+  req.marvelPath = `/${req.params.id}/comics`
+  next()
+})
+
+// all /marvel requests fallthrough here
+// use {marvelPath} defined by routes to build request
+router.use(async (req, res, next) => {
+  const timestamp = Date.now()
+  const hash = generateHash(timestamp)
+
+  try {
+    const params = new URLSearchParams({
+      apikey: process.env.MARVEL_PUK,
+      ts: timestamp,
+      hash,
+      ...req.query,
+    })
+
+    const { request, data } = await axios.get(
+      `${baseURL}${req?.marvelPath || ''}`,
+      {
         params,
-      })
-      // console.warn(request)
-      res.json(data)
-    } catch (error) {
-      // console.warn(error)
-      next(error)
-    }
-  })
-}
+      }
+    )
+    // console.warn(request)
+    res.json(data)
+  } catch (error) {
+    // console.warn(error)
+    next(error)
+  }
+})
 
-module.exports = configureRoute
+router.use(function (err, req, res, next) {
+  console.error(err.stack)
+  res.status(500).send(err.message)
+  // next(err)
+})
+
+module.exports = router

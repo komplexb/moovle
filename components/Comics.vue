@@ -54,7 +54,7 @@ export default Vue.extend({
 
     // @ts-ignore
     const response = await this.$http
-      .$get(`/api/comics/${this.id}${params}`)
+      .$get(`/api/marvel/comics/${this.id}${params}`)
       .then((response: Response) => response)
 
     this.comics = response.data.results

@@ -82,7 +82,7 @@ export default Vue.extend({
   async fetch() {
     // @ts-ignore
     const response = await this.$http
-      .$get(`/api/character/${this.id}`)
+      .$get(`/api/marvel/character/${this.id}`)
       .then((response: Response) => response)
 
     this.character = response.data.results[0]

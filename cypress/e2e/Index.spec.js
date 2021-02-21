@@ -49,7 +49,7 @@ describe('Happy Path', () => {
 
   it('Character Page - Test Redirect', () => {
     cy.visit('/character/thor', {
-      failOnStatusCode: false // redirects are 301/302 we're ok with that here
+      failOnStatusCode: false, // redirects are 301/302 we're ok with that here
     })
     cy.url().should('include', '1009664')
   })
