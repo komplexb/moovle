@@ -15,6 +15,10 @@ const connectionString = `mongodb+srv://dev:${process.env.MONGODB_PASSWORD}@moov
 const UserSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  verificationToken: { type: String, required: true },
+  verificationTokenExpire: { type: Date, required: true },
+  isVerified: { type: Boolean, required: true, default: false },
+  resetPassword: { type: Boolean, required: true, default: false },
 })
 
 export default mongoose.model('User', UserSchema)
