@@ -1,9 +1,124 @@
-import AuthenticationController from '../controllers/authentication.controller'
+import {
+  CreateUser,
+  GetUser,
+  generatePasswordHash,
+  signUserToken,
+  generateVerificationToken,
+  generateVerificationTokenExpire,
+  signVerificationToken,
+  verifySignedVerificationToken,
+} from '../controllers/authentication.controller'
 import MailerController from '../controllers/mailer.controller'
 
 const { Router } = require('express')
 const router = Router()
 const passport = require('passport')
+
+router.post('/auth/password/reset', async (req, res) => {
+  const email = req.body.email
+  const user = await GetUser(email)
+
+  if (user) {
+    const verificationToken = generateVerificationToken()
+    const verificationTokenExpire = generateVerificationTokenExpire()
+
+    user.verificationToken = verificationToken
+    user.verificationTokenExpire = verificationTokenExpire
+    user.passwordReset = true
+    user.save()
+
+    const signedVerificationToken = signVerificationToken(user)
+
+    await MailerController.SendPasswordChangeToken(
+      user.email,
+      'Password resetting',
+      signedVerificationToken
+    )
+    return res.send({ message: 'Link sent, check your email.' })
+  } else {
+    return res.send({ message: `Password can't be renewed.` })
+  }
+})
+
+router.post('/auth/password/change', async (req, res) => {
+  const token = req.body.token
+  const password = req.body.password
+
+  const { email, verificationToken } = verifySignedVerificationToken(token)
+  const user = await GetUser(email)
+  if (
+    user &&
+    user.verificationToken === verificationToken &&
+    user.verificationTokenExpire >= new Date() &&
+    user.passwordReset === true
+  ) {
+    try {
+      user.password = await generatePasswordHash(password)
+      user.passwordReset = false
+      user.save()
+      return res.send({ message: 'Password has been changed.' })
+    } catch (err) {
+      return res.send({
+        message: 'An error has ocurred. Contact administrator.',
+      })
+    }
+  } else {
+    return res.send({ message: 'Token is invalid. Please try again.' })
+  }
+})
+
+router.post('/auth/confirmation', async (req, res) => {
+  const token = req.body.token
+  const { email, verificationToken } = verifySignedVerificationToken(token)
+  const user = await GetUser(email)
+
+  if (
+    user &&
+    user.verificationToken === verificationToken &&
+    user.verificationTokenExpire >= new Date()
+  ) {
+    user.isVerified = true
+    user.save()
+
+    return res.send({
+      confirmationStatus: 'verified',
+      message: 'Your email has been verified.',
+    })
+  } else {
+    return res.send({
+      confirmationStatus: 'unverified',
+      message: `Email can't be verified! Token likely expired.`,
+    })
+  }
+})
+
+router.post('/auth/confirmation/resend', async (req, res) => {
+  const email = req.body.email
+  const user = await GetUser(email)
+
+  if (user && user.isVerified() === true) {
+    return res.send('Already verified.')
+  } else if (user) {
+    const verificationToken = generateVerificationToken()
+    const verificationTokenExpire = generateVerificationTokenExpire()
+
+    user.verificationToken = verificationToken
+    user.verificationTokenExpire = verificationTokenExpire
+    user.save()
+
+    const signedVerificationToken = signVerificationToken(user)
+
+    await MailerController.SendRegistrationToken(
+      user.email,
+      'Registration confirmation - resend',
+      signedVerificationToken
+    )
+
+    return res.send('Token has been resent.')
+  } else {
+    res.send(`Token can't be resent`)
+  }
+})
 
 router.post('/auth/login', (req, res) => {
   passport.authenticate('local', { session: false }, (err, user, message) => {
@@ -14,7 +129,7 @@ router.post('/auth/login', (req, res) => {
       // todo: log fails
       return res.status(403).send(message)
     } else {
-      const token = AuthenticationController.signUserToken(user)
+      const token = signUserToken(user)
       return res.send({ token })
     }
   })(req, res)
@@ -40,37 +155,16 @@ router.post('/auth/register', async (req, res) => {
   // console.warn('body', req.headers)
   const password = req.body.password
   const email = req.body.email
-  const hashedPassword = await AuthenticationController.generatePasswordHash(
-    password
-  )
-  await AuthenticationController.CreateUser(email, hashedPassword)
+  const hashedPassword = await generatePasswordHash(password)
+  await CreateUser(email, hashedPassword)
     .then(async (user) => {
-      const signedVerificationToken = AuthenticationController.signVerificationToken(
-        user.email,
-        user.verificationToken
-      )
+      const signedVerificationToken = signVerificationToken(user)
       await MailerController.SendRegistrationToken(
         email,
         'Registration Confirmation',
         signedVerificationToken
       )
       res.send({ message: 'Check your inbox for a verification link.' })
-    })
-    .catch((err) => {
-      throw err
-    })
-})
-
-router.post('/auth/mail', async (req, res) => {
-  const email = req.body.email
-  await MailerController.SendMail(
-    email,
-    'Registration Confirmation',
-    'Registration Successful',
-    '<p>Registration Successful - You have been registered!</p>'
-  )
-    .then(async () => {
-      res.send({ status: 'ok' })
     })
     .catch((err) => {
       throw err

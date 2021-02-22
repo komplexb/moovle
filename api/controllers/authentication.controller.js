@@ -32,7 +32,7 @@ function generateVerificationTokenExpire() {
   return new Date(Date.now() + expireSpan)
 }
 
-function signVerificationToken(email, verificationToken) {
+function signVerificationToken({ email, verificationToken }) {
   return jwt.sign(
     {
       email,
@@ -101,9 +101,15 @@ passport.use(
           if (!user) {
             return done(null, false, { message: 'Authentication failed.' })
           }
+
           const validation = await comparePasswords(password, user.password)
-          if (validation) {
+          if (validation && user.isVerified) {
             return done(null, user)
+          } else if (validation) {
+            return done(null, false, {
+              message: 'Please verify your email address,',
+              resendToken: true,
+            })
           } else {
             return done(null, false, { message: 'Authentication failed.' })
           }
@@ -163,7 +169,7 @@ async function GetUser(email) {
     })
 }
 
-export default {
+export {
   CreateUser,
   GetUser,
   generatePasswordHash,
