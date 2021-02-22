@@ -1,8 +1,11 @@
 <template>
   <authentication-form
-    button-title="Sign In"
+    :options="{
+      buttonTitle: 'Sign In',
+      forgetPassword: true,
+    }"
     @authorize="handleAuthorize($event)"
-  ></authentication-form>
+  />
 </template>
 
 <script>
@@ -12,7 +15,7 @@ export default {
   computed: {},
   watch: {},
   methods: {
-    async login(email, password) {
+    async login({ email, password }) {
       try {
         this.$toast.show('Logging in...')
         const response = await this.$auth.loginWith('local', {
@@ -24,12 +27,8 @@ export default {
         this.$toast.success(response.data.message)
         await this.$router.push('/admin')
       } catch (error) {
-        this.$toast.error(error.response.data.message)
+        this.$toast.error(error.response.data.message, { duration: 5000 })
       }
-    },
-    handleAuthorize({ email, password }) {
-      console.warn(email, password)
-      this.login(email, password)
     },
   },
 }

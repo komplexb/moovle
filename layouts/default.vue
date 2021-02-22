@@ -1,5 +1,21 @@
 <template>
   <div class="flex flex-col min-h-screen" :class="`page-${$route.name}`">
+    <header>
+      <nav>
+        <ul>
+          <li v-if="!$auth.loggedIn">
+            <nuxt-link to="/login">Login</nuxt-link>
+          </li>
+          <li v-if="!$auth.loggedIn">
+            <nuxt-link to="/register">Register</nuxt-link>
+          </li>
+          <li v-if="$auth.loggedIn">
+            <nuxt-link to="/change-password">Register</nuxt-link>
+          </li>
+          <li v-if="$auth.loggedIn">Logout</li>
+        </ul>
+      </nav>
+    </header>
     <p class="text-center">
       <template v-if="isCharacterPage">
         <nuxt-link

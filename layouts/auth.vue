@@ -17,17 +17,24 @@
     >
       <section>
         <h3 class="font-bold text-2xl">Welcome to Moovle</h3>
-        <p class="text-gray-600 pt-2">Sign in to your account.</p>
+        <p class="text-gray-600 pt-2">
+          {{ formDescriptions }}
+        </p>
       </section>
 
       <section class="mt-10">
         <Nuxt keep-alive />
       </section>
     </main>
-    <div class="max-w-lg mx-auto text-center mt-12 mb-6">
+    <div
+      v-if="$route.name === 'login'"
+      class="max-w-lg mx-auto text-center mt-12 mb-6"
+    >
       <p class="text-white">
         Don't have an account?
-        <a href="#" class="font-bold hover:underline">Sign up</a>.
+        <nuxt-link to="/register" class="text-white font-bold hover:underline">
+          Sign up</nuxt-link
+        >.
       </p>
     </div>
     <Footer class="footer--auth" />
@@ -37,7 +44,22 @@
 <script lang="ts">
 import Vue from 'vue'
 
-export default Vue.extend({})
+export default Vue.extend({
+  computed: {
+    formDescriptions(): String {
+      const description = {
+        login: 'Sign in to your account.',
+        register: 'Register for an account.',
+        'login-reset':
+          'Enter your email address to receive a link to reset your password.',
+        'register-resend': `Can't find your confirmation email? Enter your email address to get a new one.`,
+        'login-reset-confirmation': `Change your password`,
+      }
+      // @ts-ignore
+      return description[this.$route?.name]
+    },
+  },
+})
 </script>
 
 <style lang="scss">

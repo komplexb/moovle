@@ -1,8 +1,11 @@
 <template>
   <authentication-form
-    button-title="Register"
+    :options="{
+      buttonTitle: 'Register',
+      forgetPassword: false,
+    }"
     @authorize="handleAuthorize($event)"
-  ></authentication-form>
+  />
 </template>
 
 <script>

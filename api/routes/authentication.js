@@ -31,12 +31,14 @@ router.post('/auth/password/reset', async (req, res) => {
 
     await MailerController.SendPasswordChangeToken(
       user.email,
-      'Password resetting',
+      'Moovle - Reset Password',
       signedVerificationToken
     )
     return res.send({ message: 'Link sent, check your email.' })
   } else {
-    return res.send({ message: `Password can't be renewed.` })
+    return res.send({
+      message: `Unable to reset password, please contact admin, or create a new account.`,
+    })
   }
 })
 
@@ -110,7 +112,7 @@ router.post('/auth/confirmation/resend', async (req, res) => {
 
     await MailerController.SendRegistrationToken(
       user.email,
-      'Registration confirmation - resend',
+      'Moovle - Resend Registration Confirmation',
       signedVerificationToken
     )
 

@@ -12,56 +12,33 @@
         class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-primary transition duration-500 px-3 pb-3"
       />
     </div>
-    <div class="mb-6 pt-3 rounded bg-gray-200">
-      <label
-        class="block text-gray-700 text-sm font-bold mb-2 ml-3"
-        for="password"
-        >Password</label
-      >
-      <input
-        id="password"
-        v-model="form.password"
-        placeholder="try a passphrase"
-        type="password"
-        class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-primary transition duration-500 px-3 pb-3"
-      />
-    </div>
-    <div v-if="options.forgetPassword" class="flex justify-end">
-      <nuxt-link
-        to="/login/reset"
-        class="text-sm text-primary hover:text-red-700 hover:underline mb-6"
-        >Forgot your password?
-      </nuxt-link>
-    </div>
     <button
       class="bg-primary hover:bg-red-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
       type="submit"
     >
-      {{ options.buttonTitle }}
+      {{ buttonTitle }}
     </button>
   </form>
 </template>
 
 <script>
 export default {
-  name: 'AuthenticationForm',
+  name: 'EmailForm',
   props: {
-    options: {
-      type: Object,
-      default: () => {},
+    buttonTitle: {
+      type: String,
+      default: 'Log In',
       required: true,
     },
   },
   data: () => ({
     form: {
       email: '',
-      password: '',
     },
   }),
-  mounted() {},
-  methods: {},
 }
 </script>
+
 <style lang="scss" scoped>
 input {
   @apply focus:ring-red-200 focus:ring-opacity-10;

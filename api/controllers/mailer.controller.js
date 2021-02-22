@@ -38,10 +38,10 @@ async function SendRegistrationToken(to, subject, verificationToken) {
 
 async function SendPasswordChangeToken(to, subject, verificationToken) {
   const html = `
-    <p>Please click the link below to change your address.</p>
+    <p>Please click the link below to change your password.</p>
     <a href="${
       process.env.API_URL || 'http://localhost:3000'
-    }/register/confirmation?token=${verificationToken}">Change your password</a>
+    }/login/reset/confirmation?token=${verificationToken}">Change your password</a>
   `
   const text = sanitizeHtml(html.toString(), {
     allowedTags: [],
