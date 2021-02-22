@@ -116,7 +116,7 @@ router.post('/auth/confirmation/resend', async (req, res) => {
       signedVerificationToken
     )
 
-    return res.send('Token has been resent.')
+    return res.send({ message: 'Check your inbox for a verification link.' })
   } else {
     res.send(`Token can't be resent`)
   }
@@ -163,7 +163,7 @@ router.post('/auth/register', async (req, res) => {
       const signedVerificationToken = signVerificationToken(user)
       await MailerController.SendRegistrationToken(
         email,
-        'Registration Confirmation',
+        'Moovle - Registration Confirmation',
         signedVerificationToken
       )
       res.send({ message: 'Check your inbox for a verification link.' })

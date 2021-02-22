@@ -37,12 +37,17 @@ async function SendRegistrationToken(to, subject, verificationToken) {
 }
 
 async function SendPasswordChangeToken(to, subject, verificationToken) {
+  const url = `${
+    process.env.API_URL || 'http://localhost:3000'
+  }/login/reset/password?token=${verificationToken}`
   const html = `
     <p>Please click the link below to change your password.</p>
-    <a href="${
-      process.env.API_URL || 'http://localhost:3000'
-    }/login/reset/confirmation?token=${verificationToken}">Change your password</a>
+    <a href="${url}">Change your password</a>
   `
+
+  // todo: remove this
+  // console.warn('token', verificationToken)
+
   const text = sanitizeHtml(html.toString(), {
     allowedTags: [],
   })

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const connectionString = `mongodb+srv://dev:${process.env.MONGODB_PASSWORD}@moovle-dev.ecnog.mongodb.net/${process.env.MONGODB}?retryWrites=true&w=majority`
+const connectionString = `mongodb+srv://dev:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB}.ecnog.mongodb.net/${process.env.MONGODB}?retryWrites=true&w=majority`
 
 ;(async () => {
   await mongoose.connect(connectionString, {
