@@ -3,14 +3,12 @@ const Schema = mongoose.Schema
 
 const connectionString = `mongodb+srv://dev:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB}.ecnog.mongodb.net/${process.env.MONGODB}?retryWrites=true&w=majority`
 
-;(async () => {
-  await mongoose.connect(connectionString, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-  })
-})()
+const connection = mongoose.createConnection(connectionString, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+})
 
 const UserSchema = new Schema({
   email: { type: String, required: true, unique: true },
@@ -21,4 +19,6 @@ const UserSchema = new Schema({
   resetPassword: { type: Boolean, required: true, default: false },
 })
 
-export default mongoose.model('User', UserSchema)
+const User = connection.model('User', UserSchema)
+
+export default connection

@@ -26,7 +26,9 @@ export default {
             password,
           }
         )
-        this.$toast.success(verification.data.message)
+        this.$toast.success(verification.data.message, {
+          onComplete: this.$router.push('/login'),
+        })
       } catch (err) {
         this.$toast.error(err.response.data.message)
       }

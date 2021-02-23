@@ -24,7 +24,7 @@ router.post('/auth/password/reset', async (req, res) => {
 
     user.verificationToken = verificationToken
     user.verificationTokenExpire = verificationTokenExpire
-    user.passwordReset = true
+    user.resetPassword = true
     user.save()
 
     const signedVerificationToken = signVerificationToken(user)
@@ -52,11 +52,11 @@ router.post('/auth/password/change', async (req, res) => {
     user &&
     user.verificationToken === verificationToken &&
     user.verificationTokenExpire >= new Date() &&
-    user.passwordReset === true
+    user.resetPassword === true
   ) {
     try {
       user.password = await generatePasswordHash(password)
-      user.passwordReset = false
+      user.resetPassword = false
       user.save()
       return res.send({ message: 'Password has been changed.' })
     } catch (err) {
@@ -154,7 +154,6 @@ router.get('/auth/user', (req, res) => {
 })
 
 router.post('/auth/register', async (req, res) => {
-  // console.warn('body', req.headers)
   const password = req.body.password
   const email = req.body.email
   const hashedPassword = await generatePasswordHash(password)

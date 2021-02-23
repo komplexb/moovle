@@ -66,10 +66,8 @@ router.use(async (req, res, next) => {
         params,
       }
     )
-    // console.warn(request)
     res.json(data)
   } catch (error) {
-    // console.warn(error)
     next(error)
   }
 })

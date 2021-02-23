@@ -1,8 +1,7 @@
-import User from '../models/user'
+import connection from '../models/user'
+const User = connection.models.User
 
 const crypto = require('crypto')
-const mongoose = require('mongoose')
-const connectionString = `mongodb+srv://dev:${process.env.MONGODB_PASSWORD}@moovle-dev.ecnog.mongodb.net/${process.env.MONGODB}?retryWrites=true&w=majority`
 const bcrypt = require('bcrypt')
 
 const passport = require('passport')
@@ -14,15 +13,6 @@ const jwt = require('jsonwebtoken')
 
 const expireSpan = 3600 * 1000 * 24
 const authEmailVerificationSecret = process.env.AUTH_EMAIL_VERIFICATION_SECRET
-
-;(async () => {
-  await mongoose.connect(connectionString, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-  })
-})()
 
 function generateVerificationToken() {
   return crypto.randomBytes(30).toString('hex')
@@ -115,7 +105,6 @@ passport.use(
           }
         })
         .catch((err) => {
-          // console.warn(err)
           return done(err)
         })
     }
@@ -143,8 +132,6 @@ async function generatePasswordHash(plainPassword) {
 async function CreateUser(email, password) {
   const verificationToken = generateVerificationToken()
   const verificationTokenExpire = generateVerificationTokenExpire()
-  // console.log(verificationToken, verificationTokenExpire)
-  // debugger
   return await User.create({
     email,
     password,
