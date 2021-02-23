@@ -37,7 +37,7 @@ function verifySignedVerificationToken(token) {
 }
 
 /**
- * In Express.js there are no req object in the req object as it is in nuxt.js.
+ * use npm cookie-parser to extract token
  * @param {*} req
  */
 const tokenExtractor = function (req) {

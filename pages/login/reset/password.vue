@@ -11,6 +11,7 @@
 <script>
 export default {
   layout: 'auth',
+  middleware: ['auth'],
   name: 'Confirmation',
   data: () => ({}),
   mounted() {

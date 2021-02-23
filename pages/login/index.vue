@@ -4,7 +4,7 @@
       buttonTitle: 'Sign In',
       forgetPassword: true,
     }"
-    @authorize="handleAuthorize($event)"
+    @authorize="login($event)"
   />
 </template>
 
@@ -24,8 +24,9 @@ export default {
             password,
           },
         })
-        this.$toast.success(response.data.message)
-        await this.$router.push('/admin')
+        this.$toast.success(response.data.message, {
+          onComplete: this.$router.push('/'),
+        })
       } catch (error) {
         this.$toast.error(error.response.data.message, { duration: 5000 })
       }
