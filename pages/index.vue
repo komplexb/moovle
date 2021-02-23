@@ -118,7 +118,7 @@ section {
 }
 
 .feel-lucky-list__button {
-  @apply rounded-md h-12 md:h-24 w-12 md:w-24 text-white transform rotate-45;
+  @apply shadow hover:shadow-md rounded-md h-12 md:h-24 w-12 md:w-24 text-white transform rotate-45;
 
   text-transform: uppercase;
 

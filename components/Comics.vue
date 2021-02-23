@@ -11,7 +11,7 @@
     </template>
     <template v-else>
       <template v-if="comics.length > 0">
-        <ul class="comics">
+        <ul class="comics mt-1">
           <li v-for="comic in comics" :key="comic.id">
             <a :href="getComicLink(comic)" :title="comic.title" target="_blank">
               <Card :item="comic" :options="options" />
@@ -34,6 +34,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { CookieStorage } from 'cookie-storage'
+const cookieStorage = new CookieStorage()
 
 export default Vue.extend({
   name: 'Comics',
@@ -52,6 +54,12 @@ export default Vue.extend({
   async fetch() {
     const params = `?orderBy=-onsaleDate&limit=${this.fetchLimit}` // show recent n comics in descending order
 
+    // @ts-ignore
+    // set bearer token for server-side validation
+    this.$http.setHeader(
+      'Authorization',
+      cookieStorage.getItem('auth._token.local')
+    )
     // @ts-ignore
     const response = await this.$http
       .$get(`/api/marvel/comics/${this.id}${params}`)

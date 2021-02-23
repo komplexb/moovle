@@ -5,6 +5,7 @@ const axios = require('axios')
 const apicache = require('apicache')
 const rateLimit = require('express-rate-limit')
 const cache = apicache.middleware // cache globally
+const passport = require('passport')
 
 // use limiter on a per route basis
 const limiter = rateLimit({
@@ -41,10 +42,14 @@ router.get('/character/:id', function (req, res, next) {
 
 // GET {baseURL}/{characterId}/comics
 // Fetches lists of comics filtered by a character id.
-router.get('/comics/:id', function (req, res, next) {
-  req.marvelPath = `/${req.params.id}/comics`
-  next()
-})
+router.get(
+  '/comics/:id',
+  passport.authenticate('jwt', { session: false }),
+  function (req, res, next) {
+    req.marvelPath = `/${req.params.id}/comics`
+    next()
+  }
+)
 
 // all /marvel requests fallthrough here
 // use {marvelPath} defined by routes to build request

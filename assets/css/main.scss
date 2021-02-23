@@ -59,7 +59,10 @@ strong {
   min-height: initial !important; // don't want 100vh
 }
 
-a,
+a {
+  @apply text-primary;
+}
+
 .button--link {
   @apply text-primary hover:underline;
 }

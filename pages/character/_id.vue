@@ -45,6 +45,7 @@
             {{ description | stripHtml }}
           </p>
           <Comics
+            v-if="$auth.loggedIn"
             :id="id"
             :context="{
               comicLink: characterLinks.comic,
@@ -53,6 +54,18 @@
             }"
             @comicsLoaded="isComicsLoaded = true"
           />
+          <section v-else>
+            <h1>Recent comics</h1>
+            <p>
+              Please
+              <nuxt-link
+                :to="{ path: '/login', query: { previousPath: $route.path } }"
+                >Login</nuxt-link
+              >
+              or <nuxt-link to="/register">Register</nuxt-link>
+              to see recent comics.
+            </p>
+          </section>
         </div>
       </main>
     </template>

@@ -143,8 +143,6 @@ router.post('/auth/login', (req, res) => {
 })
 
 router.get('/auth/user', (req, res) => {
-  // console.log(req.cookies['auth._token.local'])
-
   passport.authenticate('jwt', { session: false }, (err, user, message) => {
     if (err) {
       // todo: log fails

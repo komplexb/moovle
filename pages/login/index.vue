@@ -25,7 +25,7 @@ export default {
           },
         })
         this.$toast.success(response.data.message, {
-          onComplete: this.$router.push('/'),
+          onComplete: this.$router.push(this.$route.query?.previousPath || '/'),
         })
       } catch (error) {
         this.$toast.error(error.response.data.message, { duration: 5000 })
