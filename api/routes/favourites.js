@@ -1,4 +1,7 @@
-import { GetUser } from '../controllers/authentication.controller'
+import {
+  GetUser,
+  favouritesScope,
+} from '../controllers/authentication.controller'
 
 import { generateHash } from '../../utils/generateHash'
 const express = require('express')
@@ -27,7 +30,7 @@ if (process.env.NODE_ENV === 'production') {
 
 router.get(
   '/favourites',
-  passport.authenticate('jwt', { session: false }),
+  [passport.authenticate('jwt', { session: false }), favouritesScope],
   async (req, res, next) => {
     const timestamp = Date.now()
     const hash = generateHash(timestamp)

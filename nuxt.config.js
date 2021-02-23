@@ -113,6 +113,7 @@ export default {
       callback: '/login',
       home: '/',
     },
+    middleware: [{ src: '~/middleware/scope.js' }],
   },
 
   // configure redirect-module

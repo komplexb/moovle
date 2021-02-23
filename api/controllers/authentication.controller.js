@@ -64,6 +64,7 @@ passport.use(
           if (user) {
             return done(null, {
               email: user.email,
+              scope: user.scope,
             })
           } else {
             return done(null, false, 'Failed')
@@ -156,6 +157,16 @@ async function GetUser(email) {
     })
 }
 
+const favouritesScope = (req, res, next) => {
+  if (!req.user.scope.includes('favourites')) {
+    return res.status(403).send({
+      status: 'fail',
+      message: 'Access Denied!',
+    })
+  }
+  next()
+}
+
 export {
   CreateUser,
   GetUser,
@@ -165,4 +176,5 @@ export {
   generateVerificationTokenExpire,
   signVerificationToken,
   verifySignedVerificationToken,
+  favouritesScope,
 }

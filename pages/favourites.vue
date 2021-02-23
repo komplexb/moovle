@@ -45,6 +45,7 @@
 <script>
 export default {
   layout: 'favourites',
+  middleware: ['auth', 'scope'],
   async fetch() {
     // @ts-ignore
     const response = await this.$http
@@ -53,7 +54,6 @@ export default {
 
     this.results = response
   },
-  middleware: ['auth'],
   data() {
     return {
       results: [],

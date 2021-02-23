@@ -122,6 +122,12 @@ router.post('/auth/confirmation/resend', async (req, res) => {
   }
 })
 
+/**
+ * Passport exposes a logout() function on req (also aliased as logOut())
+ * to terminate a login session.
+ * Invoking logout() will remove the req.user property and
+ * clear the login session (if any).
+ */
 router.post('/auth/logout', (req, res) => {
   req.logout()
   res.redirect('/')
