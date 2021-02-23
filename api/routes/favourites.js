@@ -21,42 +21,18 @@ const baseURL = `${process.env.MARVEL_API_URL}/characters`
 router.use(cache('1 day'))
 router.use(limiter)
 
-/**
- * only accept {name || nameStartsWith } for search
- * {name} Return only characters matching the specified full character name (e.g. Spider-Man).
- * {nameStartsWith} Return characters with names that begin with the specified string (e.g. Sp).
- */
-router.get('/search', function (req, res, next) {
-  if (req.query?.name || req.query?.nameStartsWith) {
-    next()
-  } else {
-    throw new Error('Invalid search, please try again.')
-  }
-})
-
-// GET {baseURL}/{characterId} Fetches a single character by id.
-router.get('/character/:id', function (req, res, next) {
-  req.marvelPath = `/${req.params.id}`
-  next()
-})
-
-/**
- * GET {baseURL}/{characterId}/comics
- * Fetches lists of comics filtered by a character id.
- * Authenticated access only
- */
-router.get(
+/* router.get(
   '/comics/:id',
   passport.authenticate('jwt', { session: false }),
   function (req, res, next) {
     req.marvelPath = `/${req.params.id}/comics`
     next()
   }
-)
+) */
 
 // all /marvel requests fallthrough here
 // use {marvelPath} defined by routes to build request
-router.use(async (req, res, next) => {
+router.get('/favourites', async (req, res, next) => {
   const timestamp = Date.now()
   const hash = generateHash(timestamp)
 
@@ -65,16 +41,21 @@ router.use(async (req, res, next) => {
       apikey: process.env.MARVEL_PUK,
       ts: timestamp,
       hash,
-      ...req.query,
     })
 
-    const { request, data } = await axios.get(
-      `${baseURL}${req?.marvelPath || ''}`,
-      {
-        params,
+    const results = ['iron man', 'captain america', 'thor'].map(
+      async (character) => {
+        const { request, data } = await axios.get(
+          `${baseURL}?name=${character}`,
+          {
+            params,
+          }
+        )
+        return data.data.results[0]
       }
     )
-    res.json(data)
+
+    await Promise.all(results).then((data) => res.json(data))
   } catch (error) {
     next(error)
   }
