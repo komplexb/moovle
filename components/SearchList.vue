@@ -37,7 +37,7 @@
         </li>
       </ul>
       <p
-        v-else-if="results.length === 0 && $fetchState.pending"
+        v-else-if="results.length === 0 && !$fetchState.pending"
         class="text-center"
       >
         Sorry we haven't created your hero yet, please try again.

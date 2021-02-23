@@ -10,6 +10,9 @@
             <nuxt-link to="/register">Register</nuxt-link>
           </li>
           <li v-if="$auth.loggedIn">
+            <nuxt-link to="/favourites">Favourite Heroes</nuxt-link>
+          </li>
+          <li v-if="$auth.loggedIn">
             <nuxt-link to="/login/reset">Reset Password</nuxt-link>
           </li>
           <li v-if="$auth.loggedIn">

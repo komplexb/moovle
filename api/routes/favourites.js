@@ -1,3 +1,5 @@
+import { GetUser } from '../controllers/authentication.controller'
+
 import { generateHash } from '../../utils/generateHash'
 const express = require('express')
 const axios = require('axios')
@@ -18,33 +20,28 @@ const router = express.Router()
 // GET /v1/public/characters Fetches lists of characters.
 const baseURL = `${process.env.MARVEL_API_URL}/characters`
 
-router.use(cache('1 day'))
-router.use(limiter)
+if (process.env.NODE_ENV === 'production') {
+  router.use(cache('1 day'))
+  router.use(limiter)
+}
 
-/* router.get(
-  '/comics/:id',
+router.get(
+  '/favourites',
   passport.authenticate('jwt', { session: false }),
-  function (req, res, next) {
-    req.marvelPath = `/${req.params.id}/comics`
-    next()
-  }
-) */
+  async (req, res, next) => {
+    const timestamp = Date.now()
+    const hash = generateHash(timestamp)
 
-// all /marvel requests fallthrough here
-// use {marvelPath} defined by routes to build request
-router.get('/favourites', async (req, res, next) => {
-  const timestamp = Date.now()
-  const hash = generateHash(timestamp)
+    const { favouriteCharacters } = await GetUser(req.user.email)
 
-  try {
-    const params = new URLSearchParams({
-      apikey: process.env.MARVEL_PUK,
-      ts: timestamp,
-      hash,
-    })
+    try {
+      const params = new URLSearchParams({
+        apikey: process.env.MARVEL_PUK,
+        ts: timestamp,
+        hash,
+      })
 
-    const results = ['iron man', 'captain america', 'thor'].map(
-      async (character) => {
+      const results = favouriteCharacters.map(async (character) => {
         const { request, data } = await axios.get(
           `${baseURL}?name=${character}`,
           {
@@ -52,14 +49,14 @@ router.get('/favourites', async (req, res, next) => {
           }
         )
         return data.data.results[0]
-      }
-    )
+      })
 
-    await Promise.all(results).then((data) => res.json(data))
-  } catch (error) {
-    next(error)
+      await Promise.all(results).then((data) => res.json(data))
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
 
 router.use(function (err, req, res, next) {
   console.error(err.stack)

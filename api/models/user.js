@@ -17,6 +17,7 @@ const UserSchema = new Schema({
   verificationTokenExpire: { type: Date, required: true },
   isVerified: { type: Boolean, required: true, default: false },
   resetPassword: { type: Boolean, required: true, default: false },
+  favouriteCharacters: { type: Array, required: false, default: [] },
 })
 
 const User = connection.model('User', UserSchema)
