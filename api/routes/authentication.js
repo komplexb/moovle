@@ -122,6 +122,11 @@ router.post('/auth/confirmation/resend', async (req, res) => {
   }
 })
 
+router.post('/auth/logout', (req, res) => {
+  req.logout()
+  res.redirect('/')
+})
+
 router.post('/auth/login', (req, res) => {
   passport.authenticate('local', { session: false }, (err, user, message) => {
     if (err) {

@@ -12,7 +12,9 @@
           <li v-if="$auth.loggedIn">
             <nuxt-link to="/login/reset">Reset Password</nuxt-link>
           </li>
-          <li v-if="$auth.loggedIn">Logout</li>
+          <li v-if="$auth.loggedIn">
+            <button class="button--link" @click="$auth.logout()">Logout</button>
+          </li>
         </ul>
       </nav>
     </header>

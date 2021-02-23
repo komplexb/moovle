@@ -99,7 +99,7 @@ export default {
             method: 'post',
             propertyName: 'token',
           },
-          logout: false,
+          logout: { url: '/api/auth/logout', method: 'post' },
           user: {
             url: '/api/auth/user',
             method: 'get',

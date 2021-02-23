@@ -59,12 +59,12 @@ strong {
   min-height: initial !important; // don't want 100vh
 }
 
-a {
-  @apply text-primary;
+a,
+.button--link {
+  @apply text-primary hover:underline;
 }
 
-a.button,
-button {
+.button {
   @apply bg-primary hover:bg-red-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200;
 
   &:disabled {

@@ -33,10 +33,7 @@
         >Forgot your password?
       </nuxt-link>
     </div>
-    <button
-      class="bg-primary hover:bg-red-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
-      type="submit"
-    >
+    <button class="button" type="submit">
       {{ options.buttonTitle }}
     </button>
   </form>

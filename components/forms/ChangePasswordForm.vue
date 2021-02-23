@@ -29,11 +29,7 @@
           class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-primary transition duration-500 px-3 pb-3"
         />
       </div>
-      <button
-        :disabled="!validatePassword"
-        class="bg-primary hover:bg-red-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
-        type="submit"
-      >
+      <button :disabled="!validatePassword" class="button" type="submit">
         {{ buttonTitle }}
       </button>
     </form>
