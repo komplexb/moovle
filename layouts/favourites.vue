@@ -1,23 +1,6 @@
 <template>
   <div class="flex flex-col min-h-screen" :class="`page-${$route.name}`">
-    <header>
-      <nav>
-        <ul>
-          <li v-if="!$auth.loggedIn">
-            <nuxt-link to="/login">Login</nuxt-link>
-          </li>
-          <li v-if="!$auth.loggedIn">
-            <nuxt-link to="/register">Register</nuxt-link>
-          </li>
-          <li v-if="$auth.loggedIn">
-            <nuxt-link to="/login/reset">Reset Password</nuxt-link>
-          </li>
-          <li v-if="$auth.loggedIn">
-            <button class="button--link" @click="$auth.logout()">Logout</button>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <Header></Header>
     <p class="text-center">
       <nuxt-link
         class="text-white align-middle p-4 inline-block"
@@ -35,13 +18,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-export default Vue.extend({
-  computed: {
-    isCharacterPage(): Boolean {
-      return this.$route.name === 'character-id'
-    },
-  },
-})
+export default Vue.extend({})
 </script>
 
 <style lang="scss">

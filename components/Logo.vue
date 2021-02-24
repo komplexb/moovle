@@ -11,6 +11,7 @@
 
   animation: 1s appear;
   margin: auto;
+  display: inline-block;
 }
 
 .slogan {

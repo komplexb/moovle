@@ -23,10 +23,8 @@ const router = express.Router()
 // GET /v1/public/characters Fetches lists of characters.
 const baseURL = `${process.env.MARVEL_API_URL}/characters`
 
-if (process.env.NODE_ENV === 'production') {
-  router.use(cache('1 day'))
-  router.use(limiter)
-}
+router.use(cache('1 day'))
+router.use(limiter)
 
 router.get(
   '/favourites',

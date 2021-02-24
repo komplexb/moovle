@@ -1,26 +1,6 @@
 <template>
   <div class="flex flex-col min-h-screen" :class="`page-${$route.name}`">
-    <header>
-      <nav>
-        <ul>
-          <li v-if="!$auth.loggedIn">
-            <nuxt-link to="/login">Login</nuxt-link>
-          </li>
-          <li v-if="!$auth.loggedIn">
-            <nuxt-link to="/register">Register</nuxt-link>
-          </li>
-          <li v-if="$auth.loggedIn && hasScope('favourites')">
-            <nuxt-link to="/favourites">Favourite Heroes</nuxt-link>
-          </li>
-          <li v-if="$auth.loggedIn">
-            <nuxt-link to="/login/reset">Reset Password</nuxt-link>
-          </li>
-          <li v-if="$auth.loggedIn">
-            <button class="button--link" @click="$auth.logout()">Logout</button>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <Header></Header>
     <p class="text-center">
       <template v-if="isCharacterPage">
         <nuxt-link
@@ -49,18 +29,6 @@ export default Vue.extend({
   computed: {
     isCharacterPage(): Boolean {
       return this.$route.name === 'character-id'
-    },
-  },
-  methods: {
-    hasScope(scope: String): Boolean {
-      // @ts-ignore
-      const userScopes = this.$auth.user?.user?.scope
-
-      if (Array.isArray(userScopes)) {
-        return userScopes.includes(scope)
-      }
-
-      return false
     },
   },
 })
