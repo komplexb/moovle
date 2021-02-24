@@ -134,18 +134,27 @@ router.post('/auth/logout', (req, res) => {
 })
 
 router.post('/auth/login', (req, res) => {
-  passport.authenticate('local', { session: false }, (err, user, message) => {
-    if (err) {
-      // todo: log fails
-      return res.status(500).send(err)
-    } else if (!user) {
-      // todo: log fails
-      return res.status(403).send(message)
-    } else {
-      const token = signUserToken(user)
-      return res.send({ token })
+  passport.authenticate(
+    'local',
+    { session: false },
+    async (err, user, message) => {
+      if (err) {
+        // todo: log fails
+        return res.status(500).send(err)
+      } else if (!user) {
+        // todo: log fails
+        return res.status(403).send(message)
+      } else {
+        const token = signUserToken(user)
+        await MailerController.SendMail(
+          user.email,
+          'Login Notification',
+          `Someone just logged into your account. If that wasn't you, contact Support.`
+        )
+        return res.send({ token })
+      }
     }
-  })(req, res)
+  )(req, res)
 })
 
 router.get('/auth/user', (req, res) => {
