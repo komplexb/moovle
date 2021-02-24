@@ -16,7 +16,7 @@
   },
   "engines": {
     "node": "12.x"
-  }
+  },
   "dependencies": {
     "@nuxt/http": "^0.6.2",
     "@nuxt/typescript-runtime": "^2.0.0",
