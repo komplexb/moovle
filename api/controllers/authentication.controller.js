@@ -100,7 +100,7 @@ passport.use(
             return done(null, user)
           } else if (validation) {
             return done(null, false, {
-              message: 'Please verify your email address,',
+              message: 'Check your email to verify your account.',
               resendToken: true,
             })
           } else {

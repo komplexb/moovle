@@ -1,7 +1,7 @@
 <template>
   <header>
     <button class="toggle-nav font-bold" @click="navVisible = !navVisible">
-      {{ navVisible ? 'Exit' : 'Menu' }}
+      {{ navVisible ? 'Close' : 'Menu' }}
     </button>
     <nav :class="{ show: navVisible }">
       <ul>

@@ -12,6 +12,7 @@ export default {}
 </script>
 
 <style lang="scss" scoped>
+.page-favourites footer,
 .footer--auth {
   @apply text-white;
 

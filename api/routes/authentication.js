@@ -130,7 +130,7 @@ router.post('/auth/confirmation/resend', async (req, res) => {
  */
 router.post('/auth/logout', (req, res) => {
   req.logout()
-  res.redirect('/')
+  res.redirect('/login')
 })
 
 router.post('/auth/login', (req, res) => {

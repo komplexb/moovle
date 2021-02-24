@@ -12,6 +12,8 @@
           v-model="form.password"
           placeholder="try a passphrase"
           type="password"
+          required
+          autofocus
           class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-primary transition duration-500 px-3 pb-3"
         />
       </div>
@@ -26,6 +28,7 @@
           v-model="form.passwordCheck"
           placeholder="same passphrase"
           type="password"
+          required
           class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-primary transition duration-500 px-3 pb-3"
         />
       </div>

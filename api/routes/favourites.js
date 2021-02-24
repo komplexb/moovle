@@ -7,9 +7,7 @@ import { generateHash } from '../../utils/generateHash'
 const express = require('express')
 const axios = require('axios')
 
-const apicache = require('apicache')
 const rateLimit = require('express-rate-limit')
-const cache = apicache.middleware // cache globally
 const passport = require('passport')
 
 // use limiter on a per route basis
@@ -23,7 +21,6 @@ const router = express.Router()
 // GET /v1/public/characters Fetches lists of characters.
 const baseURL = `${process.env.MARVEL_API_URL}/characters`
 
-router.use(cache('1 day'))
 router.use(limiter)
 
 router.get(
@@ -61,7 +58,11 @@ router.get(
 
 router.use(function (err, req, res, next) {
   console.error(err.stack)
-  res.status(500).send(err.message)
+  res
+    .status(500)
+    .send(
+      'Sorry, there was an error retrieving your favourite heroes, please try again or contact Support.'
+    )
   // next(err)
 })
 

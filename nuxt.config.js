@@ -95,15 +95,27 @@ export default {
       local: {
         endpoints: {
           login: {
-            url: '/api/auth/login',
+            url: `/api/auth/login`,
             method: 'post',
             propertyName: 'token',
+            headers: {
+              'x-apicache-bypass': true, // prevent stale data
+            },
           },
-          logout: { url: '/api/auth/logout', method: 'post' },
+          logout: {
+            url: '/api/auth/logout',
+            method: 'post',
+            headers: {
+              'x-apicache-bypass': true, // prevent stale data
+            },
+          },
           user: {
             url: '/api/auth/user',
             method: 'get',
             propertyName: false,
+            headers: {
+              'x-apicache-bypass': true, // prevent stale data
+            },
           },
         },
       },
