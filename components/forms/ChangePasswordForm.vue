@@ -50,16 +50,6 @@ export default {
       passwordCheck: '',
     },
   }),
-  computed: {
-    validatePassword() {
-      const isValid =
-        this.form.password === this.form.passwordCheck &&
-        this.form.password > 0 &&
-        this.form.passwordCheck > 0
-
-      return isValid
-    },
-  },
 }
 </script>
 

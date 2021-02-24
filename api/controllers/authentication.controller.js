@@ -90,7 +90,9 @@ passport.use(
         })
         .then(async (user) => {
           if (!user) {
-            return done(null, false, { message: 'Authentication failed.' })
+            return done(null, false, {
+              message: 'Authentication failed - User Not Found.',
+            })
           }
 
           const validation = await comparePasswords(password, user.password)
@@ -102,7 +104,9 @@ passport.use(
               resendToken: true,
             })
           } else {
-            return done(null, false, { message: 'Authentication failed.' })
+            return done(null, false, {
+              message: 'Authentication failed - Unable to Validate User.',
+            })
           }
         })
         .catch((err) => {

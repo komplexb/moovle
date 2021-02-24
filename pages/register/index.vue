@@ -30,7 +30,7 @@ export default {
         })
 
         if (user) {
-          await this.$router.push('/admin')
+          await this.$router.push('/login')
         }
       } catch (error) {
         this.$toast.error(error.response.data.message)

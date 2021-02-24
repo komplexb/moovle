@@ -6,8 +6,6 @@ const connectionString = `mongodb+srv://dev:${process.env.MONGODB_PASSWORD}@${pr
 const connection = mongoose.createConnection(connectionString, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true,
 })
 
 const UserSchema = new Schema({
