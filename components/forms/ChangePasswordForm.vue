@@ -32,7 +32,7 @@
           class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-primary transition duration-500 px-3 pb-3"
         />
       </div>
-      <button :disabled="!validatePassword" class="button" type="submit">
+      <button :disabled="!isValid" class="button" type="submit">
         {{ buttonTitle }}
       </button>
     </form>
@@ -53,6 +53,15 @@ export default {
       passwordCheck: '',
     },
   }),
+  computed: {
+    isValid() {
+      const { password, passwordCheck } = this.form
+      const isEmpty =
+        password.trim().length === 0 && passwordCheck.trim().length === 0
+
+      return !isEmpty && password.trim() === passwordCheck.trim()
+    },
+  },
 }
 </script>
 

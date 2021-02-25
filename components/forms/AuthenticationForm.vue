@@ -36,7 +36,7 @@
         >Forgot your password?
       </nuxt-link>
     </div>
-    <button class="button" type="submit">
+    <button :disabled="!isValid" class="button" type="submit">
       {{ options.buttonTitle }}
     </button>
   </form>
@@ -58,6 +58,14 @@ export default {
       password: '',
     },
   }),
+  computed: {
+    isValid() {
+      const { password, email } = this.form
+      const isEmpty = password.trim().length === 0 || email.trim().length === 0
+
+      return !isEmpty && password.trim() !== email.trim()
+    },
+  },
   mounted() {},
   methods: {},
 }

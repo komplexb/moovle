@@ -185,7 +185,6 @@ export default {
   http: {
     clientTimeout: 5000,
     https: process.env.NODE_ENV == 'production',
-    baseURL: 'http://localhost:3000', // set API_URL to prod url on server
   },
 
   serverMiddleware: [

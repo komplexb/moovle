@@ -38,7 +38,7 @@ export default {
           await this.$router.push('/login')
         }
       } catch (error) {
-        this.$toast.error(error.response.data.message)
+        this.$toast.success(error.response.data.message)
       }
     },
   },
