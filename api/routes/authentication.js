@@ -146,11 +146,13 @@ router.post('/auth/login', (req, res) => {
         return res.status(403).send(message)
       } else {
         const token = signUserToken(user)
-        await MailerController.SendMail(
-          user.email,
-          'Login Notification',
-          `Someone just logged into your account. If that wasn't you, contact Support.`
-        )
+        if (process.env.NODE_ENV == 'production') {
+          await MailerController.SendMail(
+            user.email,
+            'Moovle - Login Notification',
+            `Someone just logged into your Moovle account. If that wasn't you, please contact Support.`
+          )
+        }
         return res.send({ token })
       }
     }

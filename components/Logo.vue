@@ -1,7 +1,13 @@
 <template>
   <NuxtLink to="/">
-    <img src="~/assets/images/moovle.png" alt="" class="Logo" />
-    <p class="slogan">search the marvel universe</p>
+    <img
+      src="~/assets/images/moovle.png"
+      alt="moovle | search the marvel universe"
+      class="Logo"
+    />
+    <client-only>
+      <p class="slogan">search the marvel universe</p>
+    </client-only>
   </NuxtLink>
 </template>
 

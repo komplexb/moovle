@@ -18,7 +18,9 @@
       <Logo v-else />
     </p>
     <Nuxt keep-alive />
-    <Footer />
+    <client-only>
+      <Footer />
+    </client-only>
   </div>
 </template>
 
@@ -28,7 +30,7 @@ import Vue from 'vue'
 export default Vue.extend({
   computed: {
     isCharacterPage(): Boolean {
-      return this.$route.name === 'character-id'
+      return this.$route?.name === 'character-id'
     },
   },
 })
