@@ -163,7 +163,7 @@ function signUserToken(user) {
  * @param {*} plainPassword
  */
 async function generatePasswordHash(plainPassword) {
-  return await bcrypt.hash(plainPassword, process.env.BCRYPT_HASH)
+  return await bcrypt.hash(plainPassword, Number(process.env.BCRYPT_HASH))
 }
 
 async function CreateUser(email, password) {
