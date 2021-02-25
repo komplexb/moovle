@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col min-h-screen" :class="`page-${$route.name}`">
     <Header></Header>
-    <p class="text-center">
+    <p class="text-center mb-2">
       <template v-if="isCharacterPage">
         <nuxt-link
           class="text-white align-middle p-4 inline-block"

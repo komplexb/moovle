@@ -55,13 +55,6 @@ export default Vue.extend({
     const params = `?orderBy=-onsaleDate&limit=${this.fetchLimit}` // show recent n comics in descending order
 
     // @ts-ignore
-    // Include the JWT in requests by setting the token on the  Authorization header
-    // https://www.npmjs.com/package/passport-jwt#include-the-jwt-in-requests
-    this.$http.setHeader(
-      'Authorization',
-      cookieStorage.getItem('auth._token.local')
-    )
-    // @ts-ignore
     const response = await this.$http
       .$get(`/api/marvel/comics/${this.id}${params}`)
       .then((response: Response) => response)

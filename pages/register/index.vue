@@ -4,18 +4,20 @@
       buttonTitle: 'Register',
       forgetPassword: false,
     }"
-    @authorize="handleAuthorize($event)"
+    @authorize="register($event)"
   />
 </template>
 
 <script>
 export default {
   layout: 'auth',
+  middleware: ['isLoggedIn'],
   data: () => ({}),
   computed: {},
   watch: {},
   methods: {
-    async register(email, password) {
+    async register({ email, password }) {
+      this.$toast.show('Registering')
       try {
         await this.$axios.post('/api/auth/register', {
           email,
@@ -35,10 +37,6 @@ export default {
       } catch (error) {
         this.$toast.error(error.response.data.message)
       }
-    },
-    handleAuthorize({ email, password }) {
-      this.$toast.show('Registering')
-      this.register(email, password)
     },
   },
 }
