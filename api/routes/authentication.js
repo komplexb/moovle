@@ -174,6 +174,7 @@ router.post('/auth/login', (req, res) => {
   )(req, res)
 })
 
+// only authenticated users can access this
 router.get('/auth/user', (req, res) => {
   passport.authenticate('jwt', { session: false }, (err, user, message) => {
     if (err) {

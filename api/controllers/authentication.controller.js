@@ -193,6 +193,12 @@ async function GetUser(email) {
     })
 }
 
+/**
+ * Setup favourite scope check as middleware
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
 const favouritesScope = (req, res, next) => {
   if (!req.user.scope.includes('favourites')) {
     return res.status(403).send({

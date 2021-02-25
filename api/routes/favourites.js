@@ -23,6 +23,7 @@ const baseURL = `${process.env.MARVEL_API_URL}/characters`
 
 router.use(limiter)
 
+// only authenticated users with 'favourites' scope can access this
 router.get(
   '/favourites',
   [passport.authenticate('jwt', { session: false }), favouritesScope],
