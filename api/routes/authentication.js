@@ -14,6 +14,11 @@ const { Router } = require('express')
 const router = Router()
 const passport = require('passport')
 
+/**
+ * Via email, issue verification token to validate password change request
+ * Toggle resetPassword boolean so password can only be changed while the token is valid
+ * and boolean is true.
+ */
 router.post('/auth/password/reset', async (req, res) => {
   const email = req.body.email
   const user = await GetUser(email)
@@ -42,6 +47,9 @@ router.post('/auth/password/reset', async (req, res) => {
   }
 })
 
+/**
+ * Accept the new password
+ */
 router.post('/auth/password/change', async (req, res) => {
   const token = req.body.token
   const password = req.body.password

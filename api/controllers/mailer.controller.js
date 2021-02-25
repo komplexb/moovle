@@ -23,12 +23,17 @@ async function SendMail(to, subject, text, html) {
     })
 }
 
+/**
+ * Verify that the person signing up has access to the inbox they used
+ * @param {*} to
+ * @param {*} subject
+ * @param {*} verificationToken
+ */
 async function SendRegistrationToken(to, subject, verificationToken) {
+  const url = `${process.env.API_URL}/register/confirmation?token=${verificationToken}`
   const html = `
     <p>Please click the link below to confirm your email address and complete registration.</p>
-    <a href="${
-      process.env.API_URL || 'http://localhost:3000'
-    }/register/confirmation?token=${verificationToken}">Activate your account</a>
+    <a href="${url}">Activate your account</a>
   `
   const text = sanitizeHtml(html.toString(), {
     allowedTags: [],
@@ -36,17 +41,18 @@ async function SendRegistrationToken(to, subject, verificationToken) {
   await SendMail(to, subject, text, html)
 }
 
+/**
+ * Verify that the user actually issued a password change request
+ * @param {*} to
+ * @param {*} subject
+ * @param {*} verificationToken
+ */
 async function SendPasswordChangeToken(to, subject, verificationToken) {
-  const url = `${
-    process.env.API_URL || 'http://localhost:3000'
-  }/login/reset/password?token=${verificationToken}`
+  const url = `${process.env.API_URL}/login/reset/password?token=${verificationToken}`
   const html = `
     <p>Please click the link below to change your password.</p>
     <a href="${url}">Change your password</a>
   `
-
-  // todo: remove this
-  // console.warn('token', verificationToken)
 
   const text = sanitizeHtml(html.toString(), {
     allowedTags: [],

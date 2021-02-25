@@ -21,9 +21,13 @@ export default {
     snackbarMessage: '',
   }),
   mounted() {
+    // invoke as page loads
     this.checkToken()
   },
   methods: {
+    // confirm the account by verify the token sent via email at the following routes
+    // => /auth/confirmation/resend
+    // => /auth/register
     async checkToken() {
       const token = this.$route.query.token
       const verification = await this.$axios.post('/api/auth/confirmation/', {

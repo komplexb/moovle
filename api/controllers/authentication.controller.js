@@ -11,7 +11,7 @@ const authUserSecret = process.env.AUTH_USER_SECRET
 const JwtStrategy = require('passport-jwt').Strategy
 const jwt = require('jsonwebtoken')
 
-const expireSpan = 3600 * 1000 * 24
+const expireSpan = 3600 * 1000 * 24 // one day
 const authEmailVerificationSecret = process.env.AUTH_EMAIL_VERIFICATION_SECRET
 
 function generateVerificationToken() {
@@ -32,6 +32,12 @@ function signVerificationToken({ email, verificationToken }) {
   )
 }
 
+/**
+ * Couple an user email and a token.
+ * Avoids disclosure of real token to a user and
+ * support fast query to the database by using the contained values
+ * @param {string} token provided by email query param
+ */
 function verifySignedVerificationToken(token) {
   return jwt.verify(token, authEmailVerificationSecret)
 }
@@ -57,9 +63,9 @@ const tokenExtractor = function (req) {
  * It is intended to be used to secure RESTful endpoints without sessions.
  * http://www.passportjs.org/packages/passport-jwt/
  *
- * {jwtFromRequest} Function that accepts a request as the only parameter and returns
+ * `jwtFromRequest` Function that accepts a request as the only parameter and returns
  * either the JWT as a string or null.
- * {secretOrKey} is a string or buffer containing the secret (symmetric) or PEM-encoded
+ * `secretOrKey` is a string or buffer containing the secret (symmetric) or PEM-encoded
  * public key (asymmetric) for verifying the token's signature.
  *
  * Confused? Watch this series: https://bit.ly/37HptYz
@@ -91,6 +97,9 @@ passport.use(
 
 /**
  * The local authentication strategy authenticates users using a username and password.
+ * If any of the following steps fail, the user cannot login
+ * - Compare entered password to db
+ * - Check if user has verified their email address
  * http://www.passportjs.org/packages/passport-local/
  * Confused? Watch this series: https://bit.ly/37HptYz
  */
@@ -122,7 +131,7 @@ passport.use(
             })
           } else {
             return done(null, false, {
-              message: 'Authentication failed - Unable to Validate User.',
+              message: 'Authentication failed - Unable to verify user.',
             })
           }
         })

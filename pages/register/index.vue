@@ -19,11 +19,14 @@ export default {
     async register({ email, password }) {
       this.$toast.show('Registering')
       try {
+        // sign up
         await this.$axios.post('/api/auth/register', {
           email,
           password,
         })
 
+        // then try to login which will trigger the verification email
+        // on first attempt to login
         const user = await this.$auth.loginWith('local', {
           data: {
             email,
