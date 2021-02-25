@@ -10,6 +10,7 @@
 
 <script>
 export default {
+  layout: 'auth',
   data: () => ({}),
   methods: {
     async resendToken({ email }) {

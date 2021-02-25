@@ -54,6 +54,8 @@ export default Vue.extend({
           'Enter your email address to receive a link to reset your password.',
         'register-resend': `Can't find your confirmation email? Enter your email address to get a new one.`,
         'login-reset-confirmation': `Change your password`,
+        'login-reset-password':
+          'Password should be at least 8 characters, including a number, symbol and capital letter.',
       }
       // @ts-ignore
       return description[this.$route?.name]
