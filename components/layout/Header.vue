@@ -1,10 +1,12 @@
 <template>
   <header>
-    <button class="toggle-nav font-bold" @click="navVisible = !navVisible">
-      {{ navVisible ? 'Close' : 'Menu' }}
-    </button>
-    <nav :class="{ show: navVisible }">
-      <ul>
+    <div class="container relative">
+      <button class="toggle-nav font-bold" @click="navVisible = !navVisible">
+        {{ navVisible ? 'Close' : 'Menu' }}
+      </button>
+    </div>
+    <nav :class="[{ show: navVisible }, '']">
+      <ul class="container">
         <li>
           <nuxt-link to="/">Home</nuxt-link>
         </li>
@@ -64,13 +66,15 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .user {
+  @apply text-xl;
+
   color: var(--color-secondary);
   padding: 14px 16px;
   text-align: center;
   font-weight: bold;
 }
 .toggle-nav {
-  @apply py-2 px-4 text-primary rounded-md border-2 left-4 top-2;
+  @apply py-2 px-4 text-primary rounded-md border-2 top-2;
 
   border-color: currentColor;
   position: absolute;
@@ -82,6 +86,8 @@ export default Vue.extend({
 nav {
   @apply mt-16;
 
+  padding-left: 0 !important;
+  padding-right: 0 !important;
   display: none;
   overflow: hidden;
   background-color: var(--color-primary-alt);
