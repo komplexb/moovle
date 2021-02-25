@@ -99,14 +99,14 @@ export default {
             method: 'post',
             propertyName: 'token',
             headers: {
-              'x-apicache-bypass': true, // prevent stale data
+              'x-apicache-bypass': true, // prevent stale data due to apicache middleware
             },
           },
           logout: {
             url: '/api/auth/logout',
             method: 'post',
             headers: {
-              'x-apicache-bypass': true, // prevent stale data
+              'x-apicache-bypass': true, // prevent stale data due to apicache middleware
             },
           },
           user: {
@@ -114,7 +114,7 @@ export default {
             method: 'get',
             propertyName: false,
             headers: {
-              'x-apicache-bypass': true, // prevent stale data
+              'x-apicache-bypass': true, // prevent stale data due to apicache middleware
             },
           },
         },
