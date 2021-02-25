@@ -8,6 +8,10 @@ const connection = mongoose.createConnection(connectionString, {
   useUnifiedTopology: true,
 })
 
+/**
+ * Leverage Mongoose, a MongoDB object modeling tool
+ * designed to work in an asynchronous environment.
+ */
 const UserSchema = new Schema({
   email: { type: String, required: true, unique: true },
   favouriteCharacters: { type: Array, required: false, default: [] },

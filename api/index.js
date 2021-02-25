@@ -2,8 +2,11 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const app = express()
+
+// todo: consider a route specific plugin
 const apicache = require('apicache')
 const cache = apicache.middleware
+
 const passport = require('passport')
 
 const marvel = require('./routes/marvel')

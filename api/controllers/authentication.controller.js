@@ -52,6 +52,18 @@ const tokenExtractor = function (req) {
   return token
 }
 
+/**
+ * This module lets you authenticate endpoints using a JSON web token.
+ * It is intended to be used to secure RESTful endpoints without sessions.
+ * http://www.passportjs.org/packages/passport-jwt/
+ *
+ * {jwtFromRequest} Function that accepts a request as the only parameter and returns
+ * either the JWT as a string or null.
+ * {secretOrKey} is a string or buffer containing the secret (symmetric) or PEM-encoded
+ * public key (asymmetric) for verifying the token's signature.
+ *
+ * Confused? Watch this series: https://bit.ly/37HptYz
+ */
 passport.use(
   new JwtStrategy(
     {
@@ -77,6 +89,11 @@ passport.use(
   )
 )
 
+/**
+ * The local authentication strategy authenticates users using a username and password.
+ * http://www.passportjs.org/packages/passport-local/
+ * Confused? Watch this series: https://bit.ly/37HptYz
+ */
 passport.use(
   new LocalStrategy(
     {
@@ -128,10 +145,16 @@ function signUserToken(user) {
     },
     authUserSecret
   )
+  // return jwt.sign(({ id, email } = user), authUserSecret)
 }
 
+/**
+ * bcrypt is good but pbkdf2 is better: https://bit.ly/301qCGx
+ * https://www.npmjs.com/package/pbkdf2
+ * @param {*} plainPassword
+ */
 async function generatePasswordHash(plainPassword) {
-  return await bcrypt.hash(plainPassword, 12)
+  return await bcrypt.hash(plainPassword, process.env.BCRYPT_HASH)
 }
 
 async function CreateUser(email, password) {

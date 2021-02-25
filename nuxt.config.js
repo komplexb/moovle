@@ -89,6 +89,10 @@ export default {
     duration: 3000,
   },
 
+  /**
+   * Configure nuxt-auth
+   * https://auth.nuxtjs.org/
+   */
   auth: {
     localStorage: true,
     strategies: {
@@ -99,14 +103,16 @@ export default {
             method: 'post',
             propertyName: 'token',
             headers: {
-              'x-apicache-bypass': true, // prevent stale data due to apicache middleware
+              // prevent stale data due to apicache middleware
+              'x-apicache-bypass': true,
             },
           },
           logout: {
             url: '/api/auth/logout',
             method: 'post',
             headers: {
-              'x-apicache-bypass': true, // prevent stale data due to apicache middleware
+              // prevent stale data due to apicache middleware
+              'x-apicache-bypass': true,
             },
           },
           user: {
@@ -114,7 +120,8 @@ export default {
             method: 'get',
             propertyName: false,
             headers: {
-              'x-apicache-bypass': true, // prevent stale data due to apicache middleware
+              // prevent stale data due to apicache middleware
+              'x-apicache-bypass': true,
             },
           },
         },
@@ -126,7 +133,9 @@ export default {
       home: '/',
     },
     middleware: [
+      // manage scope specific access
       { src: '~/middleware/scope.js' },
+      // deny access to these pages if already logged in
       { src: '~/middleware/isLoggedIn.js' },
     ],
   },

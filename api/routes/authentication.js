@@ -133,6 +133,13 @@ router.post('/auth/logout', (req, res) => {
   res.redirect('/login')
 })
 
+/**
+ * Authenticate access to the app with the `local` strategy
+ * defined in the authentication controller.
+ *
+ * If authentication succeeds,
+ * the next handler will be invoked and the req.user property will be set to the authenticated user.
+ */
 router.post('/auth/login', (req, res) => {
   passport.authenticate(
     'local',
