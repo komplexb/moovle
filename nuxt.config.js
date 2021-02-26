@@ -98,7 +98,6 @@ export default {
       options: {
         secure: process.env.NODE_ENV == 'production',
         sameSite: true,
-        httpOnly: true,
       },
     },
     scope: true,
