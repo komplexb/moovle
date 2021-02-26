@@ -94,8 +94,16 @@ export default {
    * https://auth.nuxtjs.org/
    */
   auth: {
-    localStorage: true,
+    cookie: {
+      options: {
+        secure: process.env.NODE_ENV == 'production',
+        sameSite: true,
+      },
+    },
+    scope: true,
+    scopeKey: 'user.scope',
     strategies: {
+      // local is the default, credentials/token based scheme for flows like JWT.
       local: {
         endpoints: {
           login: {

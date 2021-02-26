@@ -16,7 +16,7 @@
         <li v-if="!$auth.loggedIn">
           <nuxt-link to="/register">Register</nuxt-link>
         </li>
-        <li v-if="$auth.loggedIn && hasScope('favourites')">
+        <li v-if="$auth.loggedIn && $auth.hasScope('favourites')">
           <nuxt-link to="/favourites">Favourite Heroes</nuxt-link>
         </li>
         <li v-if="$auth.loggedIn">
@@ -47,18 +47,6 @@ export default Vue.extend({
     user(): String {
       // @ts-ignore
       return this.$auth.user?.user
-    },
-  },
-  methods: {
-    hasScope(scope: String): Boolean {
-      // @ts-ignore
-      const userScopes = this.user?.scope
-
-      if (Array.isArray(userScopes)) {
-        return userScopes.includes(scope)
-      }
-
-      return false
     },
   },
 })
