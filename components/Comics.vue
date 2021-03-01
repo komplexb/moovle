@@ -34,8 +34,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CookieStorage } from 'cookie-storage'
-const cookieStorage = new CookieStorage()
 
 export default Vue.extend({
   name: 'Comics',
