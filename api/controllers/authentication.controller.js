@@ -127,7 +127,6 @@ passport.use(
           } else if (validation) {
             return done(null, false, {
               message: 'Check your email to verify your account.',
-              resendToken: true,
             })
           } else {
             return done(null, false, {

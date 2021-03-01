@@ -21,26 +21,44 @@ export default {
     snackbarMessage: '',
   }),
   mounted() {
-    // invoke as page loads
-    this.checkToken()
+    if (this.$route.query?.token) {
+      // invoke as page loads
+      this.checkToken()
+    } else {
+      this.$router.push('/register/confirmation/resend')
+    }
   },
   methods: {
     // confirm the account by verify the token sent via email at the following routes
     // => /auth/confirmation/resend
     // => /auth/register
     async checkToken() {
-      const token = this.$route.query.token
-      const verification = await this.$axios.post('/api/auth/confirmation/', {
-        token,
-      })
-      if (verification.data.confirmationStatus === 'verified') {
-        await this.$router.push('/login')
-        this.$toast.success(verification.data.message)
-      } else if (verification.data.confirmationStatus === 'unverified') {
-        await this.$router.push('/register/confirmation/resend')
-        this.$toast.error('Confirmation email has expired, please try again.', {
-          duration: 10000,
+      let verification
+      try {
+        verification = await this.$axios.post('/api/auth/confirmation/', {
+          token: this.$route.query.token,
         })
+        if (verification.data.confirmationStatus === 'verified') {
+          await this.$router.push('/login')
+          this.$toast.success(verification.data.message)
+        } else if (verification.data.confirmationStatus === 'unverified') {
+          await this.$router.push('/register/confirmation/resend')
+          this.$toast.error(
+            'Confirmation email has expired, please try again.',
+            {
+              duration: 10000,
+            }
+          )
+        }
+      } catch (error) {
+        // display express-validator messages
+        if (error.response.data?.validation) {
+          error.response.data.validation.forEach(({ msg, param }) => {
+            this.$toast.show(`${msg} for ${param}.`)
+          })
+        } else {
+          this.$toast.show(error.response.data.message, { duration: 5000 })
+        }
       }
     },
   },

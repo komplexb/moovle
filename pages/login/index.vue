@@ -1,8 +1,9 @@
 <template>
-  <authentication-form
+  <AuthenticationForm
     :options="{
       buttonTitle: 'Sign In',
       forgetPassword: true,
+      passwordRules: false,
     }"
     @authorize="login($event)"
   />
@@ -18,18 +19,24 @@ export default {
   methods: {
     async login({ email, password }) {
       try {
-        this.$toast.show('Logging in...')
-        const response = await this.$auth.loginWith('local', {
+        await this.$auth.loginWith('local', {
           data: {
             email,
             password,
           },
         })
-        this.$toast.success(response.data.message, {
+        this.$toast.success('Logged In', {
           onComplete: this.$router.push(this.$route.query?.previousPath || '/'),
         })
       } catch (error) {
-        this.$toast.error(error.response.data.message, { duration: 5000 })
+        // display express-validator messages
+        if (error.response.data?.validation) {
+          error.response.data.validation.forEach(({ msg, param }) => {
+            this.$toast.show(`${msg} for ${param}.`)
+          })
+        } else {
+          this.$toast.show(error.response.data.message, { duration: 5000 })
+        }
       }
     },
   },

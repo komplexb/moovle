@@ -85,8 +85,8 @@ export default {
   ],
 
   toast: {
-    singleton: true,
-    duration: 3000,
+    singleton: false,
+    duration: 5000,
   },
 
   /**

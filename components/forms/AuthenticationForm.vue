@@ -18,8 +18,12 @@
       <label
         class="block text-gray-700 text-sm font-bold mb-2 ml-3"
         for="password"
-        >Password</label
       >
+        Password
+        <em v-if="options.passwordRules"
+          >at least 8 characters, including a number.</em
+        >
+      </label>
       <input
         id="password"
         v-model="form.password"

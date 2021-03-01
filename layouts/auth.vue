@@ -28,7 +28,7 @@
     </main>
     <div
       v-if="$route.name === 'login'"
-      class="max-w-lg mx-auto text-center mt-12 mb-6"
+      class="max-w-lg mx-auto text-center mt-8 mb-6"
     >
       <p class="text-white">
         Don't have an account?

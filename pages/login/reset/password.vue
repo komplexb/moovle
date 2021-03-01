@@ -3,8 +3,7 @@
     <ChangePasswordForm
       button-title="Change password"
       @authorize="changePassword($event)"
-    >
-    </ChangePasswordForm>
+    />
   </div>
 </template>
 
@@ -14,24 +13,28 @@ export default {
   middleware: ['auth'],
   name: 'Confirmation',
   data: () => ({}),
-  mounted() {
-    this.token = this.$route.query.token
-  },
   methods: {
     async changePassword({ password }) {
       try {
         const verification = await this.$axios.post(
           '/api/auth/password/change',
           {
-            token: this.token,
+            token: this.$route.query.token,
             password,
           }
         )
         this.$toast.success(verification.data.message, {
           onComplete: this.$router.push('/login'),
         })
-      } catch (err) {
-        this.$toast.error(err.response.data.message)
+      } catch (error) {
+        // display express-validator messages
+        if (error.response.data?.validation) {
+          error.response.data.validation.forEach(({ msg, param }) => {
+            this.$toast.show(`${msg} for ${param}.`)
+          })
+        } else {
+          this.$toast.show(error.response.data.message)
+        }
       }
     },
   },

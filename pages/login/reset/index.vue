@@ -20,8 +20,15 @@ export default {
           email,
         })
         this.$toast.success(response.data.message)
-      } catch (err) {
-        this.$toast.error(err.response.data.message)
+      } catch (error) {
+        // display express-validator messages
+        if (error.response.data?.validation) {
+          error.response.data.validation.forEach(({ msg, param }) => {
+            this.$toast.show(`${msg} for ${param}.`)
+          })
+        } else {
+          this.$toast.show(error.response.data.message)
+        }
       }
     },
   },
