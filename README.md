@@ -5,10 +5,31 @@
 A web app for exploring Marvel Comic characters.
 
 ## Try it
-Visit https://moovle-search.herokuapp.com  
+Visit https://moovle-auth.herokuapp.com  
 Start entering a character name and the site app will provide a filtered list of upto twenty Marvel characters **starting with** your string.
 
 Press `ENTER` after your text and the app will provide a character with that **exact name** if one exists.
+
+### A few things to note.
+1. Public visitors (guests) can search and view characters as usual, but without the comics component.
+2. Authenticated users can see comics on the `/characters` page.
+3. Authenticated users with the `favourites` scope like the accounts below can visit the `/favourites` page and see a list of favourite characters stored in the DB.
+ 
+### To see step 2 in action, create an account:
+https://moovle-auth.herokuapp.com/register
+
+### To see step 3 in action login with:  
+__Account 1__  
+Username: moovle.demo+f4@gmail.com  
+Password: Fantastic4  
+
+__Account 2__  
+Username: moovle.demo+gotg@gmail.com  
+Password: IamGr00t
+
+### Learn more
+http://bit.ly/moovle-auth
+
 
 ## Build Setup
 
@@ -40,7 +61,7 @@ $ npm run test:e2e
 - Use `heroku config:set VARIABLE=value` or the Heroku Dashboard to add the following variables:
 ```
 # https://http.nuxtjs.org/options#browserbaseurl
-API_URL=https://moovle-search.herokuapp.com
+API_URL=https://moovle-auth.herokuapp.com
 MARVEL_API_URL=https://gateway.marvel.com/v1/public
 MARVEL_PRK
 MARVEL_PUK

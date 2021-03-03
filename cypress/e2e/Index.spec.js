@@ -33,7 +33,7 @@ describe('Happy Path', () => {
       .should('be.gt', 1)
   })
 
-  it('Character Page - Has Comic Cards', () => {
+  it.skip('Character Page - Has Comic Cards', () => {
     cy.visit('/')
     cy.get('.search-box')
       .type('thor', { delay: 1000 })
@@ -54,7 +54,7 @@ describe('Happy Path', () => {
     cy.url().should('include', '1009664')
   })
 
-  it.skip('Paging', () => {
+  it('Paging', () => {
     cy.visit('/')
     cy.get('.search-box')
       .type('t', { delay: 1000 })
@@ -68,7 +68,7 @@ describe('Happy Path', () => {
       .should('be.gt', 20)
   })
 
-  it.skip('Character Page - Background Styled', () => {
+  it('Character Page - Background Styled', () => {
     cy.visit('/character/1009664')
     cy.get('.pg-character').should('have.attr', 'data-cy-bg-styled', 'true')
   })
