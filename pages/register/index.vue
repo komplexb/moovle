@@ -25,7 +25,16 @@ export default {
           password,
         })
 
-        if (res.status === 200)
+        // then try to login which will trigger the verification email
+        // on first attempt to login
+        const user = await this.$auth.loginWith('local', {
+          data: {
+            email,
+            password,
+          },
+        })
+
+        if (user)
           this.$toast.success('Check your email to verify your account.')
       } catch (error) {
         // display express-validator messages
@@ -34,7 +43,9 @@ export default {
             this.$toast.show(`${msg} for ${param}.`)
           })
         } else {
-          this.$toast.show(error.response.data.message)
+          this.$toast.success(error.response.data.message, {
+            onComplete: this.$router.push('/'),
+          })
         }
       }
     },

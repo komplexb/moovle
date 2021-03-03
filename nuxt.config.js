@@ -155,6 +155,7 @@ export default {
   },
 
   helmet: {
+    // helmet.xssFilter disables browsers' buggy cross-site scripting filter by setting the X-XSS-Protection header to 0
     xssFilter: false,
   },
 
@@ -201,6 +202,7 @@ export default {
       handler: '~/api',
     },
     redirectSSL.create({
+      // https://www.npmjs.com/package/redirect-ssl#using-with-nuxtjs
       enabled: process.env.NODE_ENV === 'production',
     }),
   ],
