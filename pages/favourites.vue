@@ -47,7 +47,7 @@ export default {
   layout: 'favourites',
   middleware: ['auth', 'scope'],
   async fetch() {
-    // @ts-ignore
+    this.$http.setHeader('x-apicache-bypass', 'true')
     const response = await this.$http
       .$get(`/api/favourites`)
       .then((response) => response)
